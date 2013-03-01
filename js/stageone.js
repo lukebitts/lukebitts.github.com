@@ -1,6 +1,7 @@
 function StageOne(stage) {
 	this.stage = stage;
 	this.stage.enableMouseOver(1000);
+	createjs.Touch.enable(this.stage);
 	this.world = new b2World(new b2Vec2(0,3), true);
 	this.destroy_list = [];
 	
