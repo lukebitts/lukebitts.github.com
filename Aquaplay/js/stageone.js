@@ -108,6 +108,18 @@ StageOne.prototype.BeginContact = function(contact) {
 			new EndStagePopup(this.stage,this);
 		}*/
 	}
+	else if(contact.GetFixtureB().GetBody() == this.chestTarget.body.GetBody()) {
+		this.itens.removeChild(contact.GetFixtureA().GetBody().GetUserData());
+		this.destroy_list.push(contact.GetFixtureA().GetBody());
+		
+		this.score += contact.GetFixtureA().GetBody().GetUserData().points;
+		this.score_text.text = this.score;
+		
+		/*if(this.score >= 10) {
+			this.paused = true;
+			new EndStagePopup(this.stage,this);
+		}*/
+	}
 }
 StageOne.prototype.handle_keyboard = function(evt) {
 	console.log(evt);
