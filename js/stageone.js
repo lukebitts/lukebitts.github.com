@@ -49,8 +49,11 @@ function StageOne(stage) {
 	btn_left.graphics.beginFill("lightgreen").drawCircle(0,0,60);
 	btn_left.x = 80;
 	btn_left.y = 560;
-	btn_left.addEventListener("mousedown",function(){
+	btn_left.addEventListener("mousedown",function(evt){
 		this.bubble_jet_left.start();
+		evt.addEventListener("mouseup",function(){
+			this.bubble_jet_left.stop();
+		}.context(this));
 	}.context(this));
 	this.addChild(btn_left);
 
@@ -60,6 +63,12 @@ function StageOne(stage) {
 	btn_right.y = 560;
 	btn_right.addEventListener("mousedown",function(){
 		this.bubble_jet_right.start();
+	}.context(this));
+	btn_right.addEventListener("mousedown",function(evt){
+		this.bubble_jet_right.start();
+		evt.addEventListener("mouseup",function(){
+			this.bubble_jet_right.stop();
+		}.context(this));
 	}.context(this));
 	this.addChild(btn_right);
 	
