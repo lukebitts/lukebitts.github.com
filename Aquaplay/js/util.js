@@ -5,9 +5,13 @@ Function.prototype.context = function(context)  {
   return function() { action.apply(context, arguments); };
 }
 
-Math.degToRad = function(deg) {
-	return deg * Math.PI / 180.0;
+Math.radToDeg = function(rad) {
+	return rad * Math.PI / 180.0;
 };
+
+Math.degToRad = function(deg) {
+	return deg * 180.0 / Math.PI;
+}
 
 var b2Vec2 = Box2D.Common.Math.b2Vec2
 ,	b2BodyDef = Box2D.Dynamics.b2BodyDef

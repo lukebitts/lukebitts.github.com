@@ -22,6 +22,7 @@ function MainMenu(stage) {
 		this.destroy();
 		new StageOne(this.stage);
 	}.context(this));
+
 }
 MainMenu.prototype = new createjs.Container();
 MainMenu.prototype.tick = function(evt) {
