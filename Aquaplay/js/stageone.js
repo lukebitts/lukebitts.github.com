@@ -38,7 +38,7 @@ StageOne.prototype.initialize = function(stage) {
 	}.context(fishes);
 	complete_fishes();
 	
-	this.addChild(new Planktons(0,200,900,400));
+	//this.addChild(new Planktons(0,200,900,400));
 	
 	var rays = new createjs.Container();
 	rays.addChild(new createjs.Bitmap(queue.getResult("ray1")));
