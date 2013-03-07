@@ -33,8 +33,8 @@ LoadingScreen.prototype.initialize = function(stage) {
 	
 	queue.loadManifest([
 		{id:"sea_bottom", src:"img/sea_bottom.png"},
-		{id:"layer1", src:"img/_layer1.png"},
-		{id:"layer2", src:"img/_layer2.png"},
+		{id:"layer1", src:"img/layer1.png"},
+		{id:"layer2", src:"img/layer2.png"},
 		{id:"bubble", src:"img/bubble.png"},
 		{id:"coin", src:"img/coin.png"},
 		{id:"diamond", src:"img/diamond.png"},
@@ -47,8 +47,8 @@ LoadingScreen.prototype.initialize = function(stage) {
 		{id:"chesttop", src:"img/chest_top2.png"},
 		{id:"chestclosed", src:"img/chest_closed2.png"},
 		{id:"sea_bottom_ship", src:"img/sea_bottom_ship.png"},
-		{id:"layer2_1", src:"img/_layer2_1.png"},
-		{id:"layer2_2", src:"img/_layer2_2.png"},
+		{id:"layer2_1", src:"img/layer2_1.png"},
+		{id:"layer2_2", src:"img/layer2_2.png"},
 		{id:"ray2_1", src:"img/ray2_1.png"},
 		{id:"ray2_2", src:"img/ray2_2.png"},
 		{id:"fish_off", src:"img/fish_off.png"},
