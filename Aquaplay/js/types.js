@@ -343,10 +343,6 @@ Planktons.prototype.initialize = function(x,y,w,h) {
 	}
 	this.cont3.alpha = 0.5;
 	
-	/*this.cont1.cache(0,0,900,675);
-	this.cont2.cache(0,0,900,675);
-	this.cont3.cache(0,0,900,675);*/
-	
 	var cont_end = function() {
 		if(this.alpha <= 0.2) {
 			createjs.Tween.get(this).to({alpha:1.0},1000).call(cont_end.context(this))
@@ -365,6 +361,10 @@ Planktons.prototype.initialize = function(x,y,w,h) {
 	this.cont1.mask = mask;
 	this.cont2.mask = mask;
 	this.cont3.mask = mask;
+	
+	this.cont1.cache(0,0,900,675);
+	this.cont2.cache(0,0,900,675);
+	this.cont3.cache(0,0,900,675);
 	
 	this.height = h;
 	
