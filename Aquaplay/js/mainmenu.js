@@ -1,9 +1,10 @@
 function MainMenu(stage) {
-	this.stage = stage;
-	
-	this.stage.addChild(this);
-	this._tick_callback = this.tick.context(this);
-	createjs.Ticker.addEventListener("tick",this._tick_callback);
+	this.initialize(stage);
+}
+MainMenu.prototype = new ScreenBase();
+MainMenu.prototype.ScreenBase_initialize = ScreenBase.prototype.initialize;
+MainMenu.prototype.initialize = function(stage) {
+	this.ScreenBase_initialize(stage);
 	
 	this.play_btn = new createjs.Container();
 	this.addChild(this.play_btn);
@@ -22,13 +23,4 @@ function MainMenu(stage) {
 		this.destroy();
 		new StageOne(this.stage);
 	}.context(this));
-
 }
-MainMenu.prototype = new createjs.Container();
-MainMenu.prototype.tick = function(evt) {
-	this.stage.update();
-};
-MainMenu.prototype.destroy = function() {
-	this.stage.removeChild(this);
-	createjs.Ticker.removeEventListener("tick",this._tick_callback);
-};

@@ -3,18 +3,10 @@ var queue = new createjs.LoadQueue(false);
 function LoadingScreen(stage) {
 	this.initialize(stage);
 }
-LoadingScreen.prototype = new createjs.Container();
-LoadingScreen.prototype.Container_initialize = createjs.Container.prototype.initialize;
+LoadingScreen.prototype = new ScreenBase();
+LoadingScreen.prototype.ScreenBase_initialize = ScreenBase.prototype.initialize;
 LoadingScreen.prototype.initialize = function(stage) {
-	this.Container_initialize();
-
-	this.stage = stage;
-	this.stage.enableMouseOver(1000);
-	createjs.Touch.enable(this.stage);
-	
-	this.stage.addChild(this);
-	this._tick_callback = this.handleTick.context(this);
-	createjs.Ticker.addEventListener("tick",this._tick_callback);
+	this.ScreenBase_initialize(stage);
 	
 	var objects = new createjs.Container();
 	var loading_text = new createjs.Text("Carregando: 0%","20px Arial", "black");
@@ -23,8 +15,8 @@ LoadingScreen.prototype.initialize = function(stage) {
 	objects.addChild(loading_text);
 	this.addChild(objects);
 	
-	queue.addEventListener("fileprogress", function(e) {
-		loading_text.text = "Carregando: " + parseInt(e.progress * 100) + "%";
+	queue.addEventListener("progress", function(e) {
+		loading_text.text = "Carregando: " + parseInt(e.loaded * 100) + "%";
 	});
 	queue.addEventListener("complete", function(e){
 		this.destroy();
@@ -56,10 +48,3 @@ LoadingScreen.prototype.initialize = function(stage) {
 		{id:"ghost", src:"img/ghost.png"}
 	]);
 }
-LoadingScreen.prototype.handleTick = function(evt) {
-	this.stage.update(evt);
-};
-LoadingScreen.prototype.destroy = function() {
-	this.stage.removeChild(this);
-	createjs.Ticker.removeEventListener("tick",this._tick_callback);
-};

@@ -1,6 +1,14 @@
 function main() {
 	var stage = new createjs.Stage("canvas");	
-	var stage_one = new LoadingScreen(stage);
+	new LoadingScreen(stage);
+	
+	stage.enableMouseOver(1000);
+	createjs.Touch.enable(this.stage);
+	
+	var tick = function(evt) {
+		stage.update(evt);
+	}
+	createjs.Ticker.addEventListener("tick",tick);
 }
 window.onload = main;
 

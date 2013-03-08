@@ -21,10 +21,6 @@ Glow.prototype.initialize = function(n) {
 	
 	tween_end();
 }
-Glow.prototype.handleTick = function(evt) {
-	
-}
-
 function FallingItem(world, x, y, type) {
 	this.initialize(world, x, y, type);
 }
@@ -78,7 +74,7 @@ FallingItem.prototype.initialize = function(world, x, y, type) {
 FallingItem.prototype.handleTick = function(evt) {
 	this.x = this.body.GetBody().GetPosition().x * pixels_in_meters;
 	this.y = this.body.GetBody().GetPosition().y * pixels_in_meters;
-	if(this.should_rotate) this.icon.rotation = Math.degToRad(this.body.GetBody().GetAngle());
+	if(this.should_rotate) this.icon.rotation = Math.radToDeg(this.body.GetBody().GetAngle());
 	
 	if(this.y >= 748)
 		this.dispatchEvent("destroy");
@@ -172,13 +168,19 @@ function ChestTarget(world,x,y,w,h,scale) {
 }
 ChestTarget.prototype = new createjs.Container();
 ChestTarget.prototype.Container_initialize = createjs.Container.prototype.initialize;
-ChestTarget.prototype.initialize = function(world, x, y, w, h, scale) {
+ChestTarget.prototype.initialize = function(world, x, y, w, h, types) {
 	this.Container_initialize();
+	
+	types = types || [
+		[370,y-20,10,100,-3.9],
+		[530,y-20,10,100,3.9],
+		[450,y+30,160,10,0]
+	]
 	
 	this.x = x;
 	this.y = y;
 	
-	this.scaleX = this.scaleY = scale || 1;
+	//this.scaleX = this.scaleY = scale || 1;
 	
 	var fix_def = new b2FixtureDef;
 	fix_def.shape = new b2PolygonShape;
@@ -198,9 +200,9 @@ ChestTarget.prototype.initialize = function(world, x, y, w, h, scale) {
 	
 	this.body = world.CreateBody(body_def).CreateFixture(fix_def);
 	
-	this.addChild(new Obstacle(world,375,y-20,10,100,0));
-	this.addChild(new Obstacle(world,525,y-20,10,100,0));
-	this.addChild(new Obstacle(world,450,y+30,160,10,0));
+	this.addChild(new Obstacle(world,types[0][0],types[0][1],types[0][2],types[0][3],types[0][4]));
+	this.addChild(new Obstacle(world,types[1][0],types[1][1],types[1][2],types[1][3],types[1][4]));
+	this.addChild(new Obstacle(world,types[2][0],types[2][1],types[2][2],types[2][3],types[2][4]));
 }
 
 function BubbleJet(world,x,y,blast_power,dir) {
@@ -259,6 +261,32 @@ BubbleJet.prototype.stop = function() {
 	this.started = false;
 	this.interval = 0;
 }
+
+function JetController(jet,scene,x,y) {
+	this.initialize(jet,scene,x,y);
+}
+JetController.prototype = new createjs.Container();
+JetController.prototype.Container_initialize = createjs.Container.prototype.initialize;
+JetController.prototype.initialize = function(jet,scene,x,y) {
+	this.Container_initialize();
+	
+	this.x = x;
+	this.y = y;
+	this._jet = jet;
+	this._scene = scene;
+	
+	this.addChild(new createjs.Shape());
+	this.children[0].graphics.beginFill("lightgreen").drawCircle(0,0,60);
+	
+	this.addEventListener("mousedown",function(evt) {
+		if(this._scene.is_paused()) return;
+		this._jet.start();
+		evt.addEventListener("mouseup",function(){
+			this._jet.stop();
+		}.context(this));
+	}.context(this));
+}
+
 
 function Planktons(x,y,w,h) {
 	this.initialize(x,y,w,h);

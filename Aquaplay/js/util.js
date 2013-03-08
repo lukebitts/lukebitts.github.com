@@ -2,14 +2,14 @@ var pixels_in_meters = 30;
 
 Function.prototype.context = function(context)  {
   var action = this;
-  return function() { action.apply(context, arguments); };
+  return function() { return action.apply(context, arguments); };
 }
 
-Math.radToDeg = function(rad) {
+Math.degToRad = function(rad) {
 	return rad * Math.PI / 180.0;
 };
 
-Math.degToRad = function(deg) {
+Math.radToDeg = function(deg) {
 	return deg * 180.0 / Math.PI;
 }
 
