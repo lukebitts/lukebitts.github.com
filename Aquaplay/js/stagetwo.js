@@ -68,13 +68,15 @@ StageTwo.prototype.initialize = function(stage) {
 	}.context(ghost);
 	complete_ghost();
 	
+	this.addChildAt(new Planktons(150,0,750,450),4);
+	
 	var rays = new createjs.Container();
 	rays.addChild(new createjs.Bitmap(queue.getResult("ray2_1")));
 	rays.getChildAt(0).x = 360;
 	rays.getChildAt(0).alpha = 0;
 	rays.addChild(new createjs.Bitmap(queue.getResult("ray2_2")));
 	rays.getChildAt(1).x = 280;
-	this.addChildAt(rays,4);
+	this.addChildAt(rays,5);
 	
 	var complete_ray = function() {
 		if(this.alpha <= 0) {
@@ -87,11 +89,11 @@ StageTwo.prototype.initialize = function(stage) {
 	complete_ray.context(rays.getChildAt(1))();
 	
 	var layer2 = new createjs.Bitmap(queue.getResult("layer2_2"));
-	this.addChildAt(layer2,5);
+	this.addChildAt(layer2,6);
 	
-	this.addChildAt(new createjs.Bitmap(queue.getResult("layer2_1")),7);
+	this.addChildAt(new createjs.Bitmap(queue.getResult("layer2_1")),8);
 	
-	var chest_new_pos = 140;
+	var chest_new_pos = -100;
 	
 	this.chestTopOpen = new createjs.Bitmap(queue.getResult("chesttop"));
 	this.chestTopOpen.x = 468 - 186/2;

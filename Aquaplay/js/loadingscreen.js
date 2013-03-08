@@ -20,7 +20,7 @@ LoadingScreen.prototype.initialize = function(stage) {
 	});
 	queue.addEventListener("complete", function(e){
 		this.destroy();
-		stage_one = new MainMenu(this.stage);
+		new MainMenu(this.stage);
 	}.context(this));
 	
 	queue.loadManifest([
@@ -45,6 +45,8 @@ LoadingScreen.prototype.initialize = function(stage) {
 		{id:"ray2_2", src:"img/ray2_2.png"},
 		{id:"fish_off", src:"img/fish_off.png"},
 		{id:"fish_on", src:"img/fish_on.png"},
-		{id:"ghost", src:"img/ghost.png"}
+		{id:"ghost", src:"img/ghost.png"},
+		{id:"planctons", src:"img/planctons.png"},
+		{id:"planctons2", src:"img/planctons2.png"}
 	]);
 }

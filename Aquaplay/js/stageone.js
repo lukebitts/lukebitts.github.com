@@ -45,6 +45,8 @@ StageOne.prototype.initialize = function(stage) {
 	rays.getChildAt(1).y = 20;
 	this.addChildAt(rays,3);
 	
+	this.addChildAt(new Planktons(0,200,900,400),3);
+	
 	var complete_ray = function() { 
 		if(this.alpha <= 0) {
 			createjs.Tween.get(this).to({alpha:1},2000).call(complete_ray);
@@ -56,11 +58,11 @@ StageOne.prototype.initialize = function(stage) {
 	complete_ray.context(rays.getChildAt(1))();
 	
 	var layer2 = new createjs.Bitmap(queue.getResult("layer2"));
-	this.addChildAt(layer2,4);
+	this.addChildAt(layer2,5);
 	layer2.y = 100;
 	
-	this.addChildAt(new createjs.Bitmap(queue.getResult("layer1")),6);
-	
+	this.addChildAt(new createjs.Bitmap(queue.getResult("layer1")),7);
+
 	this.chestTopOpen = new createjs.Bitmap(queue.getResult("chesttop"));
 	this.chestTopOpen.x = 450 - 186/2;
 	this.chestTopOpen.y = 520 - 152;
@@ -100,7 +102,7 @@ StageOne.prototype.contact = function(contact) {
 		made_point = true;
 	}
 	
-	if(made_point && this._score >= 10) {
+	if(made_point && this._score >= 1) {
 		this.set_pause(true);
 		
 		this.removeChild(this.chestTopOpen);

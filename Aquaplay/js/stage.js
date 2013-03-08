@@ -65,7 +65,7 @@ StageBase.prototype.initialize = function(stage) {
 StageBase.prototype.set_pause = function(state) {
 	this._paused = state;
 	
-	if(!state) {
+	if(state) {
 		this._left_jet.stop();
 		this._right_jet.stop();
 	}

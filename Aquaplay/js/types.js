@@ -307,6 +307,15 @@ Planktons.prototype.initialize = function(x,y,w,h) {
 	this.addChild(this.cont2);
 	this.addChild(this.cont3);
 	
+	/*var planc = new createjs.Bitmap(queue.getResult("planctons"));
+	var planc2 = new createjs.Bitmap(queue.getResult("planctons2"));
+	//planc.alpha = 0.9;
+	//planc2.alpha = 0.9;
+	
+	this.cont1.addChild(planc.clone());
+	this.cont2.addChild(planc2.clone());
+	this.cont3.addChild(planc.clone());*/
+	
 	for(var i = 0; i < 200; ++i) {
 		var s = s1.clone();
 		s.x = Math.random() * w;
@@ -334,12 +343,16 @@ Planktons.prototype.initialize = function(x,y,w,h) {
 	}
 	this.cont3.alpha = 0.5;
 	
+	/*this.cont1.cache(0,0,900,675);
+	this.cont2.cache(0,0,900,675);
+	this.cont3.cache(0,0,900,675);*/
+	
 	var cont_end = function() {
 		if(this.alpha <= 0.2) {
-			createjs.Tween.get(this).to({alpha:0.8},1000).call(cont_end.context(this))
+			createjs.Tween.get(this).to({alpha:1.0},1000).call(cont_end.context(this))
 		}
 		else {
-			createjs.Tween.get(this).to({alpha:0.2},1000).call(cont_end.context(this))
+			createjs.Tween.get(this).to({alpha:0.4},1000).call(cont_end.context(this))
 		}
 	}
 	cont_end.context(this.cont1)();
@@ -363,9 +376,9 @@ Planktons.prototype.handleTick = function(evt) {
 	this.cont1.y += 0.5;
 	this.cont2.y += 0.5;
 	
-	this.cont1.x = Math.sin(Math.degToRad(this.frame))*15;
-	this.cont2.x = Math.cos(Math.degToRad(this.frame))*15;
-	this.cont3.x = Math.cos(Math.degToRad(this.frame))*15;
+	this.cont1.x = Math.sin(Math.radToDeg(this.frame))*15;
+	this.cont2.x = Math.cos(Math.radToDeg(this.frame))*15;
+	this.cont3.x = Math.cos(Math.radToDeg(this.frame))*15;
 	
 	if(this.cont1.y >= this.height)
 		this.cont1.y = -this.height;
