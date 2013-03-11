@@ -78,6 +78,8 @@ StageOne.prototype.initialize = function(stage) {
 	this.addChild(this.chestTarget);
 	
 	this.addEventListener("contact",this.contact.context(this));
+	
+	this.create_gui();
 }
 StageOne.prototype.contact = function(contact) {
 	contact = contact.target;
@@ -102,7 +104,7 @@ StageOne.prototype.contact = function(contact) {
 		made_point = true;
 	}
 	
-	if(made_point && this._score >= 1) {
+	if(made_point && this._score >= 15) {
 		this.set_pause(true);
 		
 		this.removeChild(this.chestTopOpen);
@@ -120,7 +122,8 @@ StageOne.prototype.contact = function(contact) {
 		
 		createjs.Tween.get(this.chestTopClosed).to({scaleX:1.46,scaleY:0.4},200).call(function(){
 			createjs.Tween.get(this.chestTopClosed).to({scaleX:1,scaleY:1},200).call(function(){
-				new EndStagePopup(this.stage, this);
+				console.log(this.stage, this, StageTwo);
+				new EndStagePopup(this.stage, this, StageTwo);
 			}.context(this));
 		}.context(this));
 	}

@@ -80,23 +80,27 @@ FallingItem.prototype.handleTick = function(evt) {
 		this.dispatchEvent("destroy");
 }
 
-function Obstacle(world, x, y, w, h, angle) {
-	this.initialize(world, x, y, w, h, angle);
+function Obstacle(world, x, y, w, h, angle, restitution) {
+	this.initialize(world, x, y, w, h, angle, restitution);
 }
 Obstacle.prototype = new createjs.Shape();
 Obstacle.prototype.Shape_initialize = createjs.Shape.prototype.initialize;
-Obstacle.prototype.initialize = function(world, x, y, w, h, angle) {
+Obstacle.prototype.initialize = function(world, x, y, w, h, angle, restitution) {
 	this.Shape_initialize();
+	
+	restitution = restitution || 0;
+	console.log(restitution);
 	
 	this.x = x;
 	this.y = y;
-	this.graphics = new createjs.Graphics();
-	this.graphics.beginFill("black").drawRect(-w/2,-h/2, w, h);
+	/*this.graphics = new createjs.Graphics();
+	this.graphics.beginFill("black").drawRect(-w/2,-h/2, w, h);*/
 	this.rotation = angle;
 	
 	var fix_def = new b2FixtureDef;
 	fix_def.shape = new b2PolygonShape;
 	fix_def.shape.SetAsBox(w / 2 / pixels_in_meters, h / 2 / pixels_in_meters);
+	fix_def.restitution = restitution;
 	fix_def.filter.categoryBits = 2;
 	
 	var body_def = new b2BodyDef;
@@ -256,10 +260,12 @@ BubbleJet.prototype._bubble_with_force = function(world, x, y, blast_power, dir)
 BubbleJet.prototype.start = function() {
 	this.started = true;
 	this.time = createjs.Ticker.getTime();
+	this.dispatchEvent("jetstarted",this);
 }
 BubbleJet.prototype.stop = function() {
 	this.started = false;
 	this.interval = 0;
+	this.dispatchEvent("jetstoped",this);
 }
 
 function JetController(jet,scene,x,y) {
@@ -275,8 +281,23 @@ JetController.prototype.initialize = function(jet,scene,x,y) {
 	this._jet = jet;
 	this._scene = scene;
 	
-	this.addChild(new createjs.Shape());
-	this.children[0].graphics.beginFill("lightgreen").drawCircle(0,0,60);
+	this.scaleX = this.scaleY = 0.9;
+	//this.rotation = 180;
+
+	var press = new createjs.Bitmap(queue.getResult("button_press"));
+	press.regX = 171/2;
+	press.regY = 177/2;
+	
+	this.addEventListener("jetstarted",function(e){
+		this.addChild(press);
+	}.context(this));
+	this.addEventListener("jetstoped",function(e){
+		this.removeChild(press);
+	}.context(this));
+	
+	this.addChild(new createjs.Bitmap(queue.getResult("button")));
+	this.children[0].regX = 171/2;
+	this.children[0].regY = 177/2;
 	
 	this.addEventListener("mousedown",function(evt) {
 		if(this._scene.is_paused()) return;
@@ -306,15 +327,6 @@ Planktons.prototype.initialize = function(x,y,w,h) {
 	this.addChild(this.cont1);
 	this.addChild(this.cont2);
 	this.addChild(this.cont3);
-	
-	/*var planc = new createjs.Bitmap(queue.getResult("planctons"));
-	var planc2 = new createjs.Bitmap(queue.getResult("planctons2"));
-	//planc.alpha = 0.9;
-	//planc2.alpha = 0.9;
-	
-	this.cont1.addChild(planc.clone());
-	this.cont2.addChild(planc2.clone());
-	this.cont3.addChild(planc.clone());*/
 	
 	for(var i = 0; i < 200; ++i) {
 		var s = s1.clone();

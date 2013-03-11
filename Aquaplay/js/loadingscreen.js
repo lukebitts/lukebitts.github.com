@@ -46,7 +46,16 @@ LoadingScreen.prototype.initialize = function(stage) {
 		{id:"fish_off", src:"img/fish_off.png"},
 		{id:"fish_on", src:"img/fish_on.png"},
 		{id:"ghost", src:"img/ghost.png"},
-		{id:"planctons", src:"img/planctons.png"},
-		{id:"planctons2", src:"img/planctons2.png"}
+		{id:"mermaid", src:"img/mermaid.png"},
+		{id:"layer3_1", src:"img/layer3_1.png"},
+		{id:"layer3_2", src:"img/layer3_2.png"},
+		{id:"layer3_3", src:"img/layer3_3.png"},
+		{id:"ray3_1", src:"img/ray3_1.png"},
+		{id:"ray3_2", src:"img/ray3_2.png"},
+		
+		{id:"planks", src:"img/hud/planks.png"},
+		{id:"button", src:"img/hud/button.png"},
+		{id:"button_press", src:"img/hud/button_press.png"},
+		{id:"bgscore", src:"img/hud/bgscore.png"}
 	]);
 }

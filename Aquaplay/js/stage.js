@@ -45,9 +45,6 @@ StageBase.prototype.initialize = function(stage) {
 	this._right_jet.addEventListener("DestroyBubble",destroy_bubble_fn);
 	this.addChild(this._right_jet);
 	
-	this.addChild(new JetController(this._left_jet,this,80,560));
-	this.addChild(new JetController(this._right_jet,this,820,560));
-	
 	/*** Obstacles ***/
 	this.addChild(new Obstacle(this._world,150,384,10,768,0)); //Left wall
 	this.addChild(new Obstacle(this._world,750,384,10,768,0)); //Right wall
@@ -57,10 +54,10 @@ StageBase.prototype.initialize = function(stage) {
 	this._paused = false;
 	this._time = 0;
 	this._score = 0;
-	this._score_text = new createjs.Text("0","60px Arial", "#000");
-	this._score_text.x = 40;
-	this._score_text.y = 40;
-	this.addChild(this._score_text);
+	this._score_text = new createjs.Text("0","bold 50px Arial", "#000");
+	this._score_text.textAlign = "center";
+	this._score_text.x = 155/2;
+	this._score_text.y = 60;
 }
 StageBase.prototype.set_pause = function(state) {
 	this._paused = state;
@@ -106,6 +103,34 @@ StageBase.prototype.handle_tick = function(evt) {
 	this._world.ClearForces();
 	
 	this._world.DrawDebugData();
+}
+StageBase.prototype.create_gui = function() {
+	this.addChild(new createjs.Bitmap(queue.getResult("planks")));
+	
+	var j1 = new JetController(this._left_jet,this,80,560);
+	var j2 = new JetController(this._right_jet,this,820,560);
+	
+	this.addChild(j1);
+	this.addChild(j2);
+	
+	var dispatch1 = function(e) {
+		j1.dispatchEvent(e.type,e.target);
+	};
+	var dispatch2 = function(e) {
+		j2.dispatchEvent(e.type,e.target);
+	};
+	
+	this._left_jet.addEventListener("jetstarted",dispatch1);
+	this._left_jet.addEventListener("jetstoped",dispatch1);
+	
+	this._right_jet.addEventListener("jetstarted",dispatch2);
+	this._right_jet.addEventListener("jetstoped",dispatch2);
+	
+	var bgscore = new createjs.Bitmap(queue.getResult("bgscore"));
+	bgscore.y = 30;
+	this.addChild(bgscore);
+	
+	this.addChild(this._score_text);
 }
 StageBase.prototype.begin_contact = function(contact) {
 	if(this.is_paused()) return;

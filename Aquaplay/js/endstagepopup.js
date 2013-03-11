@@ -1,9 +1,10 @@
-function EndStagePopup(stage,other) {
-	this.initialize(stage,other);
+function EndStagePopup(stage,other,next) {
+	this.initialize(stage,other,next);
 }
 EndStagePopup.prototype = new createjs.Container();
 EndStagePopup.prototype.Container_initialize = createjs.Container.prototype.initialize;
-EndStagePopup.prototype.initialize = function(stage, other) {
+EndStagePopup.prototype.initialize = function(stage, other, next) {
+	console.log(stage, other, next);
 	this.Container_initialize();
 	
 	this.stage = stage;
@@ -21,7 +22,7 @@ EndStagePopup.prototype.initialize = function(stage, other) {
 	bg.addEventListener("mousedown",function(){
 		this.destroy();
 		other.destroy();
-		new StageTwo(other.stage);
+		new next(other.stage);
 	}.context(this));
 	
 	this.addChild(bg);

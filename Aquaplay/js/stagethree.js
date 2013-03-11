@@ -1,9 +1,9 @@
-function StageTwo(stage) {
+function StageThree(stage) {
 	this.initialize(stage);
 }
-StageTwo.prototype = new StageBase();
-StageTwo.prototype.StageBase_initialize = StageBase.prototype.initialize;
-StageTwo.prototype.initialize = function(stage) {
+StageThree.prototype = new StageBase();
+StageThree.prototype.StageBase_initialize = StageBase.prototype.initialize;
+StageThree.prototype.initialize = function(stage) {
 	this.StageBase_initialize(stage);
 	
 	this._random_item_fn = function() {
@@ -14,70 +14,27 @@ StageTwo.prototype.initialize = function(stage) {
 		return {type:(Math.random() < 0.8) ? "coin" : (rnd >= 0.98) ? "coin" : "diamond",screen_position_x:screen_position};
 	}.context(this);
 	
-	var bg = new createjs.Bitmap(queue.getResult("sea_bottom_ship"));
-	bg.y = -80;
+	var bg = new createjs.Bitmap(queue.getResult("layer3_3"));
 	this.addChildAt(bg,0);
 	
-	var fish_off = new createjs.Bitmap(queue.getResult("fish_off"));
-	var fish_on = new createjs.Bitmap(queue.getResult("fish_on"));
-	this.addChildAt(fish_on,1);
-	this.addChildAt(fish_off,1);
+	var mermaid = new createjs.Bitmap(queue.getResult("mermaid"));
+	this.addChildAt(mermaid,1);
+	var complete_mermaid = function() {
+		mermaid.x = (Math.random()*400 - 800);
+		mermaid.y = (Math.random()*200 + 200);
+		createjs.Tween.get(this).to({x:-Math.random() * 800 + 2000},21000).call(complete_mermaid);
+	}.context(mermaid);
+	complete_mermaid();
 	
-	var complete_fishes = function() {
-		fish_off.x = (Math.random()*1200)-1700;
-		fish_off.y = (Math.random()*200)+200;
-		fish_on.x = fish_off.x;
-		fish_on.y = fish_off.y;
-		
-		var to = Math.random()*1500+1000;
-		var to = 900;
-		createjs.Tween.get(this).to({x:to},80000).call(complete_fishes);
-		createjs.Tween.get(fish_on).to({x:to},80000);
-	}.context(fish_off);
-	complete_fishes();
-	
-	var alpha_fish = function() {
-		if(this.alpha == 0) {
-			if(Math.random() > 0.5)
-				createjs.Tween.get(this).to({alpha:1},800).call(alpha_fish);
-			else
-				createjs.Tween.get(this).to({alpha:0},Math.random() * 500 + 1000).call(alpha_fish);
-		}
-		else
-			createjs.Tween.get(this).to({alpha:0},Math.random() * 3000 + 2000).call(alpha_fish);
-	}.context(fish_on);
-	alpha_fish();
-	
-	var ghost = new createjs.Bitmap(queue.getResult("ghost"));
-	ghost.alpha = 0;
-	
-	this.addChildAt(ghost,3);
-	var complete_ghost = function() {
-		if(this.alpha == 0) {
-			if(Math.random() > 0.95) {
-				this.x = Math.random() * 400 + 150;
-				this.y = 500;
-				
-				createjs.Tween.get(this).to({y:300,x:this.x + 200,alpha:1},2200).call(function(){
-					createjs.Tween.get(this).to({y:250,x:this.x + 60,alpha:0},500).call(complete_ghost);
-				}.context(this));
-			}
-			else {
-				createjs.Tween.get(this).to({alpha:0},5000).call(complete_ghost);
-			}
-		}
-	}.context(ghost);
-	complete_ghost();
-	
-	this.addChildAt(new Planktons(150,0,750,450),4);
+	this.addChildAt(new Planktons(150,0,750,450),2);
 	
 	var rays = new createjs.Container();
-	rays.addChild(new createjs.Bitmap(queue.getResult("ray2_1")));
-	rays.getChildAt(0).x = 360;
+	rays.addChild(new createjs.Bitmap(queue.getResult("ray3_1")));
+	//rays.getChildAt(0).x = 360;
 	rays.getChildAt(0).alpha = 0;
-	rays.addChild(new createjs.Bitmap(queue.getResult("ray2_2")));
-	rays.getChildAt(1).x = 333;
-	this.addChildAt(rays,5);
+	rays.addChild(new createjs.Bitmap(queue.getResult("ray3_2")));
+	//rays.getChildAt(1).x = 280;
+	this.addChildAt(rays,3);
 	
 	var complete_ray = function() {
 		if(this.alpha <= 0) {
@@ -89,12 +46,12 @@ StageTwo.prototype.initialize = function(stage) {
 	complete_ray.context(rays.getChildAt(0))();
 	complete_ray.context(rays.getChildAt(1))();
 	
-	var layer2 = new createjs.Bitmap(queue.getResult("layer2_2"));
-	this.addChildAt(layer2,6);
+	var layer2 = new createjs.Bitmap(queue.getResult("layer3_2"));
+	this.addChildAt(layer2,4);
 	
-	this.addChildAt(new createjs.Bitmap(queue.getResult("layer2_1")),8);
+	this.addChildAt(new createjs.Bitmap(queue.getResult("layer3_1")),6);
 	
-	var chest_new_pos = -50;
+	var chest_new_pos = -80;
 	
 	this.chestTopOpen = new createjs.Bitmap(queue.getResult("chesttop"));
 	this.chestTopOpen.x = 468 - 186/2;
@@ -109,6 +66,8 @@ StageTwo.prototype.initialize = function(stage) {
 	this.chestTopClosed.x = 450;
 	this.chestTopClosed.y = 520 - chest_new_pos;
 	
+	this.chest_obstacle_top = null;
+	
 	this.chestTarget = new ChestTarget(this._world,450,520 - chest_new_pos,100,50,
 	[
 		[385,510 - chest_new_pos,10,90,-3.9],
@@ -120,9 +79,38 @@ StageTwo.prototype.initialize = function(stage) {
 
 	this.addEventListener("contact",this.contact.context(this));
 	
+	var chest_close_fn = function() {
+		if(Math.random() > 0.35) {
+			close_chest.context(this)();
+			createjs.Tween.get(this).to({},Math.random() * 2000 + 1000).call(open_chest.context(this));
+		}
+		createjs.Tween.get(this).to({},4000).call(chest_close_fn);
+	}.context(this);
+	chest_close_fn();
+	
 	this.create_gui();
 }
-StageTwo.prototype.contact = function(contact) {
+function close_chest() {
+	this.removeChild(this.chestTopOpen);
+	this.removeChild(this.chestTarget);
+	this.addChild(this.chestTopClosed);
+	
+	createjs.Tween.get(this.chestTopClosed).to({scaleX:1.46*0.8,scaleY:0.4*0.8},200).call(function(){
+		createjs.Tween.get(this.chestTopClosed).to({scaleX:0.8,scaleY:0.8},200).call(function(){
+			
+		}.context(this));
+	}.context(this));
+	
+	this.chest_obstacle_top = new Obstacle(this._world, 450, 505, 120, 20, 0, 2);
+}
+function open_chest() {
+	this.addChildAt(this.chestTopOpen,5);
+	this.addChild(this.chestTarget);
+	this.removeChild(this.chestTopClosed);
+	
+	this._world.DestroyBody(this.chest_obstacle_top.body.GetBody());
+}
+StageThree.prototype.contact = function(contact) {
 	contact = contact.target;
 	var made_point = false;
 
@@ -145,7 +133,7 @@ StageTwo.prototype.contact = function(contact) {
 		made_point = true;
 	}
 	
-	if(made_point && this._score >= 30) {
+	if(made_point && this._score >= 50) {
 		this.set_pause(true);
 		
 		this.removeChild(this.chestTopOpen);
@@ -163,7 +151,7 @@ StageTwo.prototype.contact = function(contact) {
 		
 		createjs.Tween.get(this.chestTopClosed).to({scaleX:1.46*0.8,scaleY:0.4*0.8},200).call(function(){
 			createjs.Tween.get(this.chestTopClosed).to({scaleX:0.8,scaleY:0.8},200).call(function(){
-				new EndStagePopup(this.stage, this, StageThree);
+				new EndStagePopup(this.stage, this, MainMenu);
 			}.context(this));
 		}.context(this));
 	}
