@@ -4,7 +4,6 @@ function EndStagePopup(stage,other,next) {
 EndStagePopup.prototype = new createjs.Container();
 EndStagePopup.prototype.Container_initialize = createjs.Container.prototype.initialize;
 EndStagePopup.prototype.initialize = function(stage, other, next) {
-	console.log(stage, other, next);
 	this.Container_initialize();
 	
 	this.stage = stage;

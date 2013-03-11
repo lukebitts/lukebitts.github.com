@@ -101,7 +101,7 @@ function close_chest() {
 		}.context(this));
 	}.context(this));
 	
-	this.chest_obstacle_top = new Obstacle(this._world, 450, 505, 120, 20, 0, 2);
+	this.chest_obstacle_top = new Obstacle(this._world, 450, 505, 120, 20, 0, 0.8);
 }
 function open_chest() {
 	this.addChildAt(this.chestTopOpen,5);

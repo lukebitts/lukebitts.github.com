@@ -122,7 +122,6 @@ StageOne.prototype.contact = function(contact) {
 		
 		createjs.Tween.get(this.chestTopClosed).to({scaleX:1.46,scaleY:0.4},200).call(function(){
 			createjs.Tween.get(this.chestTopClosed).to({scaleX:1,scaleY:1},200).call(function(){
-				console.log(this.stage, this, StageTwo);
 				new EndStagePopup(this.stage, this, StageTwo);
 			}.context(this));
 		}.context(this));

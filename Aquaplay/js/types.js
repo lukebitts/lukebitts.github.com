@@ -89,7 +89,6 @@ Obstacle.prototype.initialize = function(world, x, y, w, h, angle, restitution) 
 	this.Shape_initialize();
 	
 	restitution = restitution || 0;
-	console.log(restitution);
 	
 	this.x = x;
 	this.y = y;
