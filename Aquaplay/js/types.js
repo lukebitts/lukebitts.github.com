@@ -160,6 +160,8 @@ Bubble.prototype.initialize = function(world, x, y) {
 	this.addEventListener("tick", this.handleTick.context(this));
 }
 Bubble.prototype.handleTick = function(evt) {
+	if(createjs.Ticker.getPaused()) return;
+
 	this.x = this.body.GetBody().GetPosition().x * pixels_in_meters;
 	this.y = this.body.GetBody().GetPosition().y * pixels_in_meters;
 	
@@ -384,6 +386,8 @@ Planktons.prototype.initialize = function(x,y,w,h) {
 	this.frame = 0;
 }
 Planktons.prototype.handleTick = function(evt) {
+	if(createjs.Ticker.getPaused()) return;
+
 	this.cont1.y += 0.5;
 	this.cont2.y += 0.5;
 	

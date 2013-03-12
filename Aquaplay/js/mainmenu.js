@@ -21,6 +21,6 @@ MainMenu.prototype.initialize = function(stage) {
 	
 	this.play_btn.addEventListener("mousedown",function(){
 		this.destroy();
-		new StageThree(this.stage);
+		new StageOne(this.stage);
 	}.context(this));
 }

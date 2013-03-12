@@ -56,6 +56,11 @@ LoadingScreen.prototype.initialize = function(stage) {
 		{id:"planks", src:"img/hud/planks.png"},
 		{id:"button", src:"img/hud/button.png"},
 		{id:"button_press", src:"img/hud/button_press.png"},
-		{id:"bgscore", src:"img/hud/bgscore.png"}
+		{id:"bgscore", src:"img/hud/bgscore.png"},
+		{id:"score_text_glow", src:"img/hud/score_text_glow.png"},
+		
+		{id:"btn_pause", src:"img/hud/btn_pause.png"},
+		{id:"btn_pause_press", src:"img/hud/btn_pause_press.png"}
+		
 	]);
 }

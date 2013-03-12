@@ -131,6 +131,57 @@ StageBase.prototype.create_gui = function() {
 	this.addChild(bgscore);
 	
 	this.addChild(this._score_text);
+	
+	var score_glow = new createjs.Bitmap(queue.getResult("score_text_glow"));
+	score_glow.x = 30;
+	score_glow.y = 75;
+	this.addChild(score_glow);
+	
+	var pause_btn = new createjs.Bitmap(queue.getResult("btn_pause"));
+	pause_btn.x = 7;
+	pause_btn.y = 7;
+	var pause_btn_press = new createjs.Bitmap(queue.getResult("btn_pause_press"));
+	pause_btn_press.alpha = 0;
+	
+	var pause_container = new createjs.Container();
+	pause_container.addChild(pause_btn);
+	pause_container.addChild(pause_btn_press);
+	this.addChild(pause_container);
+	
+	pause_container.x = 50;
+	pause_container.y = 125;
+	
+	var pause_overlay = new createjs.Shape();
+	pause_overlay.graphics.beginFill("black").drawRect(0,0,900,675);
+	pause_overlay.alpha = 0.8;
+	
+	pause_container.addEventListener("click",function(){
+		if(this.is_paused() && createjs.Ticker.getPaused()) {
+			pause_btn_press.alpha = 0;
+			pause_btn.alpha = 100;
+			
+			this.removeChild(pause_overlay);
+			
+			this.set_pause(false);
+			createjs.Ticker.setPaused(false);
+		}
+		else if(this.is_paused() && !createjs.Ticker.getPaused()) {
+			return;
+		}
+		else /*if(!this.is_paused() && !createjs.Ticker.getPaused())*/ {
+			pause_btn.alpha = 0;
+			pause_btn_press.alpha = 100;
+			
+			
+			this.addChildAt(pause_overlay,this.getNumChildren());
+			
+			this.set_pause(true);
+			createjs.Ticker.setPaused(true);
+		}
+		this.removeChild(pause_container);
+		this.addChild(pause_container);
+	}.context(this));
+	
 }
 StageBase.prototype.begin_contact = function(contact) {
 	if(this.is_paused()) return;
