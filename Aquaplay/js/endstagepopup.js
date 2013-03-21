@@ -9,8 +9,6 @@ EndStagePopup.prototype.initialize = function(stage, other, next) {
 	this.stage = stage;
 	
 	this.stage.addChild(this);
-	this._tick_callback = this.tick.context(this);
-	createjs.Ticker.addEventListener("tick",this._tick_callback);
 	
 	var bg = new createjs.Shape();
 	bg.alpha = 0.4;
@@ -26,10 +24,6 @@ EndStagePopup.prototype.initialize = function(stage, other, next) {
 	
 	this.addChild(bg);
 }
-EndStagePopup.prototype.tick = function(evt) {
-	this.stage.update();
-};
 EndStagePopup.prototype.destroy = function() {
 	this.stage.removeChild(this);
-	createjs.Ticker.removeEventListener("tick",this._tick_callback);
 };

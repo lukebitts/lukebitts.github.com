@@ -25,4 +25,5 @@ ScreenBase.prototype.handle_tick = function(evt) {
 }
 ScreenBase.prototype.destroy = function() {
 	this.stage.removeChild(this);
+	this.dispatchEvent("destroy");
 }

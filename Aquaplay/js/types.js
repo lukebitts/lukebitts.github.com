@@ -34,6 +34,16 @@ FallingItem.prototype.initialize = function(world, x, y, type) {
 	this.points = type == "coin" ? 1 : 5;
 	this.should_rotate = (type != "coin");
 	
+	if(type != "coin") {
+		this.sound = new Howl({
+			urls:[queue.getResult("diamond_soundmp3").src,queue.getResult("diamond_soundogg").src]
+		});
+	} else {
+		this.sound = new Howl({
+			urls:[queue.getResult("coin_soundmp3").src,queue.getResult("coin_soundogg").src]
+		});
+	}
+	
 	var icon = new createjs.Bitmap(type == "coin" ? queue.getResult("coin") : queue.getResult("diamond"));
 	icon.regX = 39 / 2;
 	icon.regY = (type == "coin" ? 38 : 32) / 2;
@@ -153,7 +163,7 @@ Bubble.prototype.initialize = function(world, x, y) {
 	body_def.userData = this;
 	
 	this.body = world.CreateBody(body_def).CreateFixture(fix_def);
-	this.time = (size/20)*35;
+	this.time = Math.ceil((size/20)*35);
 	
 	//createjs.Tween.get(this).to({time:0},this.time * 1000);
 	
@@ -165,27 +175,74 @@ Bubble.prototype.handleTick = function(evt) {
 	this.x = this.body.GetBody().GetPosition().x * pixels_in_meters;
 	this.y = this.body.GetBody().GetPosition().y * pixels_in_meters;
 	
-	this.time--;
+	if(Math.ceil(this.time) == 1) {
+		this.Bitmap_initialize(queue.getResult("bubble_pop"));
+		this.regX = 93/2;
+		this.regY = 92/2;
+	}
+	
+	this.time -= 1;
+	this.time = parseInt(this.time);
 };
 
-function ChestTarget(world,x,y,w,h,scale) {
-	this.initialize(world, x, y, w, h, scale);
+function ChestTarget(world,x,y,w,h,types,s,n) {
+	this.initialize(world, x, y, w, h, types,s,n);
 }
 ChestTarget.prototype = new createjs.Container();
 ChestTarget.prototype.Container_initialize = createjs.Container.prototype.initialize;
-ChestTarget.prototype.initialize = function(world, x, y, w, h, types) {
+ChestTarget.prototype.initialize = function(world, x, y, w, h, types, s, n) {
 	this.Container_initialize();
+
+	s = s || 1.0;	
 	
 	types = types || [
 		[370,y-20,10,100,-3.9],
 		[530,y-20,10,100,3.9],
-		[450,y+30,160,10,0]
+		[450,y+30,160,10,0],
+		[450,y-80,160,100,0]
 	]
+	
+	this.sound = new Howl({
+		urls:[queue.getResult("chest_closeogg").src,queue.getResult("chest_closemp3").src]
+	});
+	
+	this._world = world;
+	this._closed_data = types[3];
 	
 	this.x = x;
 	this.y = y;
 	
-	//this.scaleX = this.scaleY = scale || 1;
+	var data = {
+		"images": [queue.getResult("bau_top")],
+		"frames": [[214, 2, 208, 222, 0, -21, -23], [426, 2, 208, 214, 0, -21, -31], [2, 2, 208, 233, 0, -21, -13], [850, 2, 208, 202, 0, -21, -44], [1062, 2, 221, 188, 0, -14, -57], [638, 2, 208, 202, 0, -21, -44]],
+		"animations": {
+			"close": {
+				"frames": [0, 1, 2, 3, 4, 5],
+				"next":"stop",
+				"frequency":2
+			},
+			"open": {
+				"frames" : [5, 4, 3, 2, 1, 0],
+				"next": "stop",
+				"frequency": 2
+			}
+		}
+	};
+	
+	this.back = make_animated_sprite(data);
+	this.back.gotoAndStop(0);
+	this.back.x = this.x; this.back.y = this.y + n;
+	this.back.scaleX = this.back.scaleY = s;
+	this.back.regX = 256/2;
+	this.back.regY = 214/2;
+	
+	data.images = [queue.getResult("bau_body")];
+	this.front = make_animated_sprite(data);
+	this.front.gotoAndStop(0);
+	this.front.x = this.x; this.front.y = this.y + n;
+	this.front.scaleX = this.front.scaleY = s;
+	this.front.regX = 256/2;
+	this.front.regY = 214/2;
 	
 	var fix_def = new b2FixtureDef;
 	fix_def.shape = new b2PolygonShape;
@@ -198,16 +255,31 @@ ChestTarget.prototype.initialize = function(world, x, y, w, h, types) {
 	body_def.position.y = this.y / pixels_in_meters;
 	body_def.userData = this;
 	
-	var chest_icon = new createjs.Bitmap(queue.getResult("chest"));
-	chest_icon.regX = 186/2;
-	chest_icon.regY = 70;
-	this.addChild(chest_icon);
-	
 	this.body = world.CreateBody(body_def).CreateFixture(fix_def);
 	
 	this.addChild(new Obstacle(world,types[0][0],types[0][1],types[0][2],types[0][3],types[0][4]));
 	this.addChild(new Obstacle(world,types[1][0],types[1][1],types[1][2],types[1][3],types[1][4]));
 	this.addChild(new Obstacle(world,types[2][0],types[2][1],types[2][2],types[2][3],types[2][4]));
+	
+	this._top_obstacle;
+
+}
+ChestTarget.prototype.close = function() {
+	this.back.gotoAndPlay("close");
+	this.front.gotoAndPlay("close");
+	
+	setTimeout(function(){
+		this.sound.play();
+	}.context(this),400);
+	
+	this._top_obstacle = new Obstacle(this._world, this._closed_data[0], this._closed_data[1], this._closed_data[2], this._closed_data[3], this._closed_data[4],1)
+}
+ChestTarget.prototype.open = function() {
+	this.back.gotoAndPlay("open");
+	this.front.gotoAndPlay("open");
+	
+	if(this._top_obstacle)
+		this._world.DestroyBody(this._top_obstacle.body.GetBody());
 }
 
 function BubbleJet(world,x,y,blast_power,dir) {
@@ -230,12 +302,22 @@ BubbleJet.prototype.initialize = function(world,x,y,blast_power,dir) {
 	this.interval = 0;
 	this.time = 0;
 	
+	this.sound = new Howl({
+		urls:[queue.getResult("bubble_soundmp3").src,queue.getResult("bubble_soundogg").src],
+		loop:true
+	});
+	this.sound.pos(Math.random());
+	this.sound.pause();
+	
 	this.addEventListener("tick",this.handleTick.context(this));
 }
 BubbleJet.prototype.handleTick = function(evt) {
 	for(var bubble in this.bubbles.children) {
 		var b = this.bubbles.children[bubble];
-		if(b.time <= 0) {
+		if(Math.ceil(b.time) == 1) {
+			this.dispatchEvent("DestroyBubble",b);
+		}
+		if(b.time <= -1) {
 			this.bubbles.removeChild(b);
 			this.dispatchEvent("DestroyBubble",b);
 		}
@@ -260,11 +342,13 @@ BubbleJet.prototype._bubble_with_force = function(world, x, y, blast_power, dir)
 }
 BubbleJet.prototype.start = function() {
 	this.started = true;
+	this.sound.play();
 	this.time = createjs.Ticker.getTime();
 	this.dispatchEvent("jetstarted",this);
 }
 BubbleJet.prototype.stop = function() {
 	this.started = false;
+	this.sound.pause();
 	this.interval = 0;
 	this.dispatchEvent("jetstoped",this);
 }
@@ -401,4 +485,25 @@ Planktons.prototype.handleTick = function(evt) {
 		this.cont2.y = -this.height;
 		
 	this.frame += 0.001;
+}
+
+function FadeBitmapAnimation(spritesheet) {
+	this.initialize(spritesheet)
+}
+
+FadeBitmapAnimation.prototype = new createjs.Container();
+FadeBitmapAnimation.prototype.Container_initialize = createjs.Container.prototype.initialize;
+FadeBitmapAnimation.prototype.initialize = function(spritesheet) {
+	this.Container_initialize();
+	
+	this._spritesheet = spritesheet;
+	
+	this.addEventListener("tick",this.handle_tick.context(this));
+	for(var i = spritesheet._frames.length - 1; i >= 0 ; i--) {
+		this.addChild(new createjs.Bitmap(spritesheet._frames[i].img));
+	}
+	
+}
+FadeBitmapAnimation.prototype.handle_tick = function(e) {
+
 }

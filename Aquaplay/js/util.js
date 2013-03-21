@@ -1,3 +1,10 @@
+var fn_b = createjs.BitmapAnimation.prototype._tick;
+createjs.BitmapAnimation.prototype._tick = function() {
+	if(createjs.Ticker.getPaused()) return;
+	
+	fn_b.context(this)();
+};
+
 var pixels_in_meters = 30;
 
 Function.prototype.context = function(context)  {
@@ -44,4 +51,11 @@ document.onkeyup = function(event) {
 	//keys[event.keyCode] = {pressed:false,time:createjs.Ticker.getTime()};
 	Keyboard.keys[event.keyCode] = false;
 	Keyboard.dispatchEvent("keyup",event);
+}
+
+var make_animated_sprite = function(data) {
+	var sprite = new createjs.BitmapAnimation(new createjs.SpriteSheet(data));
+	sprite.gotoAndPlay("all");
+	sprite.scaleX = sprite.scaleY = 0.88;
+	return sprite;
 }
