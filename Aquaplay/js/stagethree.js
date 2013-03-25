@@ -21,10 +21,10 @@ StageThree.prototype.initialize = function(stage) {
 	}.context(this);
 	
 	this.sound = new Howl({
-		urls:[queue.getResult("sound2mp3").src],
-		loop:true,
-		volume:0.5
+		urls:getSound("sound3"),
+		loop:true
 	});
+	Howler.music.push(this.sound);
 	this.sound.play();
 	
 	var bg = new createjs.Bitmap(queue.getResult("layer3_3"));
@@ -144,4 +144,6 @@ StageThree.prototype.initialize = function(stage) {
 }
 StageThree.prototype.ondestroy = function() {
 	this.sound.stop();
+	
+	Howler.music.splice(Howler.music.indexOf(this.sound),1);
 }

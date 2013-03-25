@@ -65,6 +65,15 @@ LoadingScreen.prototype.initialize = function(stage) {
 		{id:"btn_pause", src:"img/hud/btn_pause.png"},
 		{id:"btn_pause_press", src:"img/hud/btn_pause_press.png"},
 		
+		{id:"button_help", src:"img/hud/button_help.png"},
+		{id:"button_help_press", src:"img/hud/button_help_press.png"},
+		
+		{id:"button_som", src:"img/hud/button_musica.png"},
+		{id:"button_som_press", src:"img/hud/button_musica_press.png"},
+		
+		{id:"button_musica", src:"img/hud/button_som.png"},
+		{id:"button_musica_press", src:"img/hud/button_som_press.png"},
+		
 		{id:"alga", src:"img/anim/alga.png"},
 		{id:"aguaviva1over", src:"img/anim/agua viva cenario 1 over.png"},
 		{id:"aguaviva1", src:"img/anim/agua viva cenario 1 parada.png"},
@@ -86,6 +95,7 @@ LoadingScreen.prototype.initialize = function(stage) {
 		
 		{id:"ghost", src:"img/anim/fantasma.png"},
 		{id:"kraken", src:"img/anim/kraken.png"},
+		{id:"ship", src:"img/ship_bg.png"},
 		
 		{id:"plantas1_1", src:"img/anim/cenario 1 plantas 1.png"},
 		{id:"plantas2_1", src:"img/anim/cenario 1 plantas 2.png"},

@@ -36,7 +36,7 @@ HowToPlay.prototype.initialize = function(stage, other, fn) {
 	left_arrow.x = 165;
 	left_arrow.y = 430 + 35;
 	
-	var count = this.addChild(new createjs.Text("1 de "+texts.length,"43px Alice", "#fff"));
+	var count = this.addChild(new createjs.Text("1 de "+texts.length,"30px Prelo-Black", "#fff"));
 	count.textAlign = "center";
 	count.x = 225;
 	count.y = 430;

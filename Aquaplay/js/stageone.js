@@ -5,12 +5,15 @@ StageOne.prototype = new StageBase();
 StageOne.prototype.StageBase_initialize = StageBase.prototype.initialize;
 StageOne.prototype.initialize = function(stage) {
 	this.World_initialize();
-	this.StageBase_initialize(stage, new ChestTarget(this._world,450,520,140,50,null,0.86,-80), false, 15);
+	this.StageBase_initialize(stage, new ChestTarget(this._world,450,520,140,50,null,0.86,-80), false, 1);
 	
 	this.sound = new Howl({
-		urls:[queue.getResult("sound1mp3").src],
+		urls:getSound("sound1"),
 		loop:true,
 	});
+	
+	Howler.music.push(this.sound);
+	
 	this.sound.play();
 
 	this._random_item_fn = function() {
@@ -205,4 +208,6 @@ StageOne.prototype.initialize = function(stage) {
 }
 StageOne.prototype.ondestroy = function() {
 	this.sound.stop();
+	
+	Howler.music.splice(Howler.music.indexOf(this.sound),1);
 }

@@ -59,3 +59,14 @@ var make_animated_sprite = function(data) {
 	sprite.scaleX = sprite.scaleY = 0.88;
 	return sprite;
 }
+
+function getSound(name) {
+	var ret = [];
+	
+	if(queue.getResult(name+"mp3"))
+		ret.push(queue.getResult(name+"mp3").src);
+	if(queue.getResult(name+"ogg"))
+		ret.push(queue.getResult(name+"ogg").src);
+	
+	return ret;
+}

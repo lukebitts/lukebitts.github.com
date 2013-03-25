@@ -36,13 +36,15 @@ FallingItem.prototype.initialize = function(world, x, y, type) {
 	
 	if(type != "coin") {
 		this.sound = new Howl({
-			urls:[queue.getResult("diamond_soundmp3").src,queue.getResult("diamond_soundogg").src]
+			urls:getSound("diamond_sound")
 		});
 	} else {
 		this.sound = new Howl({
-			urls:[queue.getResult("coin_soundmp3").src,queue.getResult("coin_soundogg").src]
+			urls:getSound("coin_sound")
 		});
 	}
+	
+	Howler.sound_effects.push(this.sound);
 	
 	var icon = new createjs.Bitmap(type == "coin" ? queue.getResult("coin") : queue.getResult("diamond"));
 	icon.regX = 39 / 2;
@@ -203,8 +205,10 @@ ChestTarget.prototype.initialize = function(world, x, y, w, h, types, s, n) {
 	]
 	
 	this.sound = new Howl({
-		urls:[queue.getResult("chest_closeogg").src,queue.getResult("chest_closemp3").src]
+		urls:getSound("chest_close")
 	});
+	
+	Howler.sound_effects.push(this.sound);
 	
 	this._world = world;
 	this._closed_data = types[3];
@@ -303,9 +307,12 @@ BubbleJet.prototype.initialize = function(world,x,y,blast_power,dir) {
 	this.time = 0;
 	
 	this.sound = new Howl({
-		urls:[queue.getResult("bubble_soundmp3").src,queue.getResult("bubble_soundogg").src],
+		urls:getSound("bubble_sound"),
 		loop:true
 	});
+	
+	Howler.sound_effects.push(this.sound);
+	
 	this.sound.pos(Math.random());
 	this.sound.pause();
 	
@@ -486,24 +493,56 @@ Planktons.prototype.handleTick = function(evt) {
 		
 	this.frame += 0.001;
 }
-
-function FadeBitmapAnimation(spritesheet) {
-	this.initialize(spritesheet)
+function ButtonHelper(normal, over) {
+	this.initialize(normal, over);
 }
-
-FadeBitmapAnimation.prototype = new createjs.Container();
-FadeBitmapAnimation.prototype.Container_initialize = createjs.Container.prototype.initialize;
-FadeBitmapAnimation.prototype.initialize = function(spritesheet) {
+ButtonHelper.prototype = new createjs.Container();
+ButtonHelper.prototype.Container_initialize = createjs.Container.prototype.initialize;
+ButtonHelper.prototype.initialize = function(normal, over) {
 	this.Container_initialize();
 	
-	this._spritesheet = spritesheet;
+	this.normal = new createjs.Bitmap(queue.getResult(normal));
+	this.over = new createjs.Bitmap(queue.getResult(over));
 	
-	this.addEventListener("tick",this.handle_tick.context(this));
-	for(var i = spritesheet._frames.length - 1; i >= 0 ; i--) {
-		this.addChild(new createjs.Bitmap(spritesheet._frames[i].img));
-	}
+	this.addChild(this.normal);
 	
+	this.addEventListener("mousedown",function(e){
+		this.removeChild(this.normal);
+		this.addChild(this.over);
+		
+		e.addEventListener("mouseup",function(){
+			this.addChild(this.normal);
+			this.removeChild(this.over);
+		}.context(this))
+	}.context(this));
 }
-FadeBitmapAnimation.prototype.handle_tick = function(e) {
 
+function StateButton(normal,over,check,click) {
+	this.initialize(normal,over,check,click);
+}
+StateButton.prototype = new createjs.Container();
+StateButton.prototype.Container_initialize = createjs.Container.prototype.initialize;
+StateButton.prototype.initialize = function(normal, over, check, click) {
+	this.Container_initialize();
+	
+	this.normal = new createjs.Bitmap(queue.getResult(normal));
+	this.over = new createjs.Bitmap(queue.getResult(over));
+	
+	this.state = this.normal;
+	
+	this.addChild(this.normal);
+	
+	this.addEventListener("click",click);
+	
+	check(this);
+}
+StateButton.prototype.toggle = function() {
+	this.removeChild(this.state)
+	if(this.state == this.normal) {
+		this.state = this.over;
+	}
+	else {
+		this.state = this.normal;
+	}
+	this.addChild(this.state);
 }

@@ -53,9 +53,9 @@ StageBase.prototype.initialize = function(stage, chest, closing_chest, max_score
 	this.layer_front.addChild(this._itens);
 	this._random_item_fn = null;
 	
-	this.win_sound = new Howl({
-		urls:[queue.getResult("win_soundmp3").src]
-	});
+	/*this.win_sound = new Howl({
+		urls:getSound("win_sound")
+	});*/
 	
 	/*** Bubble Jets ***/
 	var destroy_bubble_fn = function(bubble) {
@@ -116,57 +116,99 @@ StageBase.prototype.initialize = function(stage, chest, closing_chest, max_score
 	score_glow.y = 75;
 	this.layer_hud.addChild(score_glow);
 	
-	var pause_btn = new createjs.Bitmap(queue.getResult("btn_pause"));
-	pause_btn.x = 7;
-	pause_btn.y = 7;
-	var pause_btn_press = new createjs.Bitmap(queue.getResult("btn_pause_press"));
-	pause_btn_press.alpha = 0;
-	
-	var pause_container = new createjs.Container();
-	pause_container.addChild(pause_btn);
-	pause_container.addChild(pause_btn_press);
-	this.layer_hud.addChild(pause_container);
-	
-	pause_container.x = 50;
-	pause_container.y = 125;
-	
 	var pause_overlay = new createjs.Shape();
 	pause_overlay.graphics.beginFill("black").drawRect(0,0,900,675);
 	pause_overlay.alpha = 0.8;
 	
-	pause_container.addEventListener("click",function(){
+	var pause_btn = new StateButton("btn_pause", "btn_pause_press",function(btn){},
+	function() {
+		if(h_win) return;
 		if(this.is_paused() && createjs.Ticker.getPaused()) {
-			pause_btn_press.alpha = 0;
-			pause_btn.alpha = 100;
-			
 			this.layer_hud.removeChild(pause_overlay);
 			
 			this.set_pause(false);
 			createjs.Ticker.setPaused(false);
+			
+			pause_btn.toggle();
 		}
 		else if(this.is_paused() && !createjs.Ticker.getPaused()) {
 			return;
 		}
 		else {
-			pause_btn.alpha = 0;
-			pause_btn_press.alpha = 100;
-			
 			this.layer_hud.addChild(pause_overlay);
 			
 			this.set_pause(true);
 			createjs.Ticker.setPaused(true);
+			
+			pause_btn.toggle();
 		}
-		this.layer_hud.removeChild(pause_container);
-		this.layer_hud.addChild(pause_container);
 	}.context(this));
+	pause_btn.x = 50; pause_btn.y = 125;
+	pause_btn.normal.x = 7; pause_btn.normal.y = 7;
+	this.addChild(pause_btn);
+	
+	var h_win;
+	var help_btn = new StateButton("button_help", "button_help_press", function(){},
+	function() {
+		if(!this.is_paused()) pause_btn.dispatchEvent("click",null);
+		if(help_btn.state != help_btn.over) {
+			h_win = new HowToPlay(this.stage, this, function(){
+				h_win.destroy();
+				h_win = null;
+				
+				pause_btn.dispatchEvent("click",null);
+				
+				help_btn.toggle();
+			}.context(this));
+			h_win.x = 225;
+		}
+		else {
+			if(h_win) {
+				h_win.destroy();
+				h_win = null;
+			}
+		}
+		help_btn.toggle();
+	}.context(this));
+	help_btn.x = 50; help_btn.y = 175;
+	help_btn.normal.x = help_btn.normal.y = 7;
+	this.addChild(help_btn);
+	
+	var music_btn;
+	music_btn = new StateButton("button_musica", "button_musica_press", function(btn){
+		btn.dispatchEvent("click",null);
+		console.log("t");
+	}, function() {
+		if(Howler.music_status == false) Howler.music_status = true;
+		else Howler.music_status = false;
+		
+		if(music_btn.state == music_btn.normal) {
+			if(Howler.music_status == false)
+				music_btn.toggle();
+		} else {
+			if(Howler.music_status == true) {
+				music_btn.toggle();
+			}
+		}
+		
+		for(var i in Howler.music) {
+			var m = Howler.music[i];
+						
+			if(Howler.music_status == true)
+				m.volume(1);
+			else
+				m.volume(0);
+		}
+	});
+	music_btn.x = 50; music_btn.y = 225;
+	music_btn.normal.x = music_btn.normal.y = 7;
+	this.addChild(music_btn);
 	
 	window.onblur = function() {
-		if(!this.is_paused()) pause_container.dispatchEvent("click",null);
-		nn = false;
+		if(!this.is_paused()) pause_btn.dispatchEvent("click",null);
 	}.context(this);
 	
 	this.chestTarget = chest;
-	//chest.close();
 	chest.open();
 	
 	this.layer_front.addChildAt(this.chestTarget.back,0);
@@ -194,8 +236,6 @@ StageBase.prototype.handle_tick = function(evt) {
 			this._world.DestroyBody(this._destroy_list[d]);
 		}
 		this._destroy_list = [];
-		
-		
 		
 		this._time += 1 / evt.params[0].delta;
 		if(this._time >= 2.0) {

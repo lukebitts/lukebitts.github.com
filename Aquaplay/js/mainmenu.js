@@ -1,27 +1,3 @@
-function ButtonHelper(normal, over) {
-	this.initialize(normal, over);
-}
-ButtonHelper.prototype = new createjs.Container();
-ButtonHelper.prototype.Container_initializer = createjs.Container.prototype.initialize;
-ButtonHelper.prototype.initialize = function(normal, over) {
-	this.Container_initializer();
-	
-	this.normal = new createjs.Bitmap(queue.getResult(normal));
-	this.over = new createjs.Bitmap(queue.getResult(over));
-	
-	this.addChild(this.normal);
-	
-	this.addEventListener("mousedown",function(e){
-		this.removeChild(this.normal);
-		this.addChild(this.over);
-		
-		e.addEventListener("mouseup",function(){
-			this.addChild(this.normal);
-			this.removeChild(this.over);
-		}.context(this))
-	}.context(this));
-}
-
 function MainMenu(stage) {
 	this.initialize(stage);
 }
@@ -31,9 +7,12 @@ MainMenu.prototype.initialize = function(stage) {
 	this.ScreenBase_initialize(stage);
 	
 	this.sound = new Howl({
-		urls:[queue.getResult("sound1mp3").src],
+		urls:getSound("sound1"),
 		loop:true,
 	});
+	
+	Howler.music.push(this.sound);
+	
 	this.sound.play();
 	
 	var t1 = new createjs.Text("a","12px Alice","#000");
@@ -80,6 +59,8 @@ MainMenu.prototype.initialize = function(stage) {
 	
 	this.addEventListener("destroy",function(){
 		this.sound.stop();
+		
+		Howler.music.splice(Howler.music.indexOf(this.sound),1);
 	}.context(this));
 }
 
