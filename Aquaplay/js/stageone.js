@@ -9,10 +9,9 @@ StageOne.prototype.initialize = function(stage) {
 	
 	this.sound = new Howl({
 		urls:getSound("sound1"),
+		group:"music",
 		loop:true,
 	});
-	
-	Howler.music.push(this.sound);
 	
 	this.sound.play();
 
@@ -206,8 +205,8 @@ StageOne.prototype.initialize = function(stage) {
 	
 	this.addEventListener("destroy",this.ondestroy.context(this));
 }
+StageOne.prototype.StageBase_ondestroy = StageBase.prototype.ondestroy;
 StageOne.prototype.ondestroy = function() {
+	this.StageBase_ondestroy();
 	this.sound.stop();
-	
-	Howler.music.splice(Howler.music.indexOf(this.sound),1);
 }

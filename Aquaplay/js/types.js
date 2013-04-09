@@ -36,15 +36,15 @@ FallingItem.prototype.initialize = function(world, x, y, type) {
 	
 	if(type != "coin") {
 		this.sound = new Howl({
-			urls:getSound("diamond_sound")
+			urls:getSound("diamond_sound"),
+			group:"sound"
 		});
 	} else {
 		this.sound = new Howl({
-			urls:getSound("coin_sound")
+			urls:getSound("coin_sound"),
+			group:"sound"
 		});
 	}
-	
-	Howler.sound_effects.push(this.sound);
 	
 	var icon = new createjs.Bitmap(type == "coin" ? queue.getResult("coin") : queue.getResult("diamond"));
 	icon.regX = 39 / 2;
@@ -88,8 +88,10 @@ FallingItem.prototype.handleTick = function(evt) {
 	this.y = this.body.GetBody().GetPosition().y * pixels_in_meters;
 	if(this.should_rotate) this.icon.rotation = Math.radToDeg(this.body.GetBody().GetAngle());
 	
-	if(this.y >= 748)
+	if(this.y >= 748) {
 		this.dispatchEvent("destroy");
+		Howler.removeHowlFromGroup("sound",this.sound);
+	}
 }
 
 function Obstacle(world, x, y, w, h, angle, restitution) {
@@ -205,10 +207,9 @@ ChestTarget.prototype.initialize = function(world, x, y, w, h, types, s, n) {
 	]
 	
 	this.sound = new Howl({
-		urls:getSound("chest_close")
+		urls:getSound("chest_close"),
+		group:"sound"
 	});
-	
-	Howler.sound_effects.push(this.sound);
 	
 	this._world = world;
 	this._closed_data = types[3];
@@ -308,10 +309,9 @@ BubbleJet.prototype.initialize = function(world,x,y,blast_power,dir) {
 	
 	this.sound = new Howl({
 		urls:getSound("bubble_sound"),
+		group:"sound",
 		loop:true
 	});
-	
-	Howler.sound_effects.push(this.sound);
 	
 	this.sound.pos(Math.random());
 	this.sound.pause();
@@ -504,7 +504,16 @@ ButtonHelper.prototype.initialize = function(normal, over) {
 	this.normal = new createjs.Bitmap(queue.getResult(normal));
 	this.over = new createjs.Bitmap(queue.getResult(over));
 	
+	this.sound = new Howl({
+		urls:getSound("button"),
+		group:"sound"
+	});
+	
 	this.addChild(this.normal);
+	
+	this.addEventListener("click",function(){
+		this.sound.play();
+	}.context(this));
 	
 	this.addEventListener("mousedown",function(e){
 		this.removeChild(this.normal);
@@ -528,11 +537,19 @@ StateButton.prototype.initialize = function(normal, over, check, click) {
 	this.normal = new createjs.Bitmap(queue.getResult(normal));
 	this.over = new createjs.Bitmap(queue.getResult(over));
 	
+	this.sound = new Howl({
+		urls:getSound("button"),
+		group:"sound"
+	});
+	
 	this.state = this.normal;
 	
 	this.addChild(this.normal);
 	
 	this.addEventListener("click",click);
+	this.addEventListener("click",function(){
+		this.sound.play();
+	}.context(this));
 	
 	check(this);
 }

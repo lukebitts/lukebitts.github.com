@@ -44,6 +44,8 @@ LoadingScreen.prototype.initialize = function(stage) {
 		{id:"bau_top", src:"img/anim/bau_tampa.png"},
 		{id:"bau_body", src:"img/anim/bau_corpo.png"},
 		
+		{id:"pirate", src:"img/anim/pirata.png"},
+		
 		{id:"sea_bottom_ship", src:"img/sea_bottom_ship.png"},
 		{id:"layer2_1", src:"img/layer2_1.png"},
 		{id:"layer2_2", src:"img/layer2_2.png"},
@@ -127,6 +129,15 @@ LoadingScreen.prototype.initialize = function(stage) {
 		{id:"btn_play_press", src:"img/hud/button_play_press.png"},
 		{id:"title", src:"img/hud/title.png"},
 		
+		{id:"tut11", src:"img/hud/tut1_1.png"},
+		{id:"tut12", src:"img/hud/tut1_2.png"},
+		
+		{id:"tut21", src:"img/hud/tut2_1.png"},
+		{id:"tut22", src:"img/hud/tut2_2.png"},
+		
+		{id:"tut3", src:"img/hud/tut3.png"},
+		{id:"tut4", src:"img/hud/tut4.png"},
+		
 		/* How to play */
 		{id:"howtoplay_arrow", src:"img/hud/howtoplay_arrow.png"},
 		{id:"howtoplay_bg", src:"img/hud/howtoplay_bg.png"},
@@ -140,6 +151,9 @@ LoadingScreen.prototype.initialize = function(stage) {
 		
 		{id:"sound3ogg", src:"sound/ogg/1-tema-aquaplay-atlantis.ogg"},
 		{id:"sound3mp3", src:"sound/mp3/1-tema-aquaplay-atlantis.mp3"},
+		
+		{id:"buttonogg", src:"sound/ogg/botao.ogg"},
+		{id:"buttonmp3", src:"sound/mp3/botao.mp3"},
 		
 		{id:"win_soundmp3", src:"sound/mp3/aquaplay-tela-acerto.mp3"},
 		{id:"win_soundogg", src:"sound/ogg/aquaplay-tela-acerto.ogg"},

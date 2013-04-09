@@ -8,11 +8,9 @@ MainMenu.prototype.initialize = function(stage) {
 	
 	this.sound = new Howl({
 		urls:getSound("sound1"),
+		group:"music",
 		loop:true,
 	});
-	
-	Howler.music.push(this.sound);
-	
 	this.sound.play();
 	
 	var t1 = new createjs.Text("a","12px Alice","#000");
@@ -60,7 +58,8 @@ MainMenu.prototype.initialize = function(stage) {
 	this.addEventListener("destroy",function(){
 		this.sound.stop();
 		
-		Howler.music.splice(Howler.music.indexOf(this.sound),1);
+		Howler.clearGroupHowls("music");
+		Howler.clearGroupHowls("sound");
 	}.context(this));
 }
 

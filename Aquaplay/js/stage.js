@@ -86,6 +86,15 @@ StageBase.prototype.initialize = function(stage, chest, closing_chest, max_score
 	
 	this.layer_hud.addChild(new createjs.Bitmap(queue.getResult("planks")));
 	
+	var data = {"images": [queue.getResult("pirate")], "frames": [[1040, 2, 515, 668, 0, -13, -31], [521, 2, 515, 668, 0, -13, -31], [2, 2, 515, 668, 0, -13, -31]], "animations": {"all": {"frames": [0, 1, 2, 2, 2, 1, 1, 0, 0], "frequency":2}}};
+	this.pirate = this.layer_hud.addChild(make_animated_sprite(data));
+	this.pirate.x = 650;
+	this.pirate.y = 100;
+	
+	createjs.Tween.get(this.pirate).to({},5000).call(function(){
+		createjs.Tween.get(this.pirate).to({y:700},5000);
+	}.context(this));
+	
 	var j1 = new JetController(this._left_jet,this,80,560);
 	var j2 = new JetController(this._right_jet,this,820,560);
 	
@@ -149,7 +158,7 @@ StageBase.prototype.initialize = function(stage, chest, closing_chest, max_score
 	
 	var h_win;
 	var help_btn = new StateButton("button_help", "button_help_press", function(){},
-	function() {
+	function(e) {
 		if(!this.is_paused()) pause_btn.dispatchEvent("click",null);
 		if(help_btn.state != help_btn.over) {
 			h_win = new HowToPlay(this.stage, this, function(){
@@ -159,13 +168,14 @@ StageBase.prototype.initialize = function(stage, chest, closing_chest, max_score
 				pause_btn.dispatchEvent("click",null);
 				
 				help_btn.toggle();
-			}.context(this));
+			}.context(this),e.target===true);
 			h_win.x = 225;
 		}
 		else {
 			if(h_win) {
 				h_win.destroy();
 				h_win = null;
+				pause_btn.dispatchEvent("click");
 			}
 		}
 		help_btn.toggle();
@@ -175,34 +185,36 @@ StageBase.prototype.initialize = function(stage, chest, closing_chest, max_score
 	this.addChild(help_btn);
 	
 	var music_btn;
-	music_btn = new StateButton("button_musica", "button_musica_press", function(btn){
-		btn.dispatchEvent("click",null);
-		console.log("t");
-	}, function() {
-		if(Howler.music_status == false) Howler.music_status = true;
-		else Howler.music_status = false;
+	music_btn = new StateButton("button_musica", "button_musica_press", function(music_btn){
+		if(Howler.groupState("music") == 0)
+			music_btn.toggle();
+	}, function(e) {
+		music_btn.toggle();
 		
-		if(music_btn.state == music_btn.normal) {
-			if(Howler.music_status == false)
-				music_btn.toggle();
-		} else {
-			if(Howler.music_status == true) {
-				music_btn.toggle();
-			}
-		}
-		
-		for(var i in Howler.music) {
-			var m = Howler.music[i];
-						
-			if(Howler.music_status == true)
-				m.volume(1);
-			else
-				m.volume(0);
-		}
+		if(Howler.groupState("music") == 0)
+			Howler.volumeGroup("music",1);
+		else
+			Howler.volumeGroup("music",0);
 	});
 	music_btn.x = 50; music_btn.y = 225;
 	music_btn.normal.x = music_btn.normal.y = 7;
 	this.addChild(music_btn);
+	
+	var sound_btn;
+	sound_btn = new StateButton("button_som", "button_som_press", function(sound_btn){
+		if(Howler.groupState("sound") == 0)
+			sound_btn.toggle();
+	}, function() {
+		sound_btn.toggle();
+		
+		if(Howler.groupState("sound") == 0)
+			Howler.volumeGroup("sound",1);
+		else
+			Howler.volumeGroup("sound",0);
+	});
+	sound_btn.x = 50; sound_btn.y = 275;
+	sound_btn.normal.x = sound_btn.normal.y = 7;
+	this.addChild(sound_btn);
 	
 	window.onblur = function() {
 		if(!this.is_paused()) pause_btn.dispatchEvent("click",null);
@@ -216,6 +228,10 @@ StageBase.prototype.initialize = function(stage, chest, closing_chest, max_score
 
 	this.addEventListener("contact",this.contact.context(this));
 	this.addEventListener("destroy",this.ondestroy.context(this));
+	
+	if(!seen_tutorial) {
+		help_btn.dispatchEvent("click", true);
+	}
 }
 StageBase.prototype.set_pause = function(state) {
 	this._paused = state;
@@ -315,7 +331,6 @@ StageBase.prototype.contact = function(contact) {
 			createjs.Tween.get(i).to({alpha:0},1400);
 		}
 		
-		//this.chestTarget.close();
 		this._call_later.push(this.chestTarget.close.context(this.chestTarget));
 		
 		var stages = [StageOne, StageTwo, StageThree];
@@ -346,4 +361,7 @@ StageBase.prototype.handle_keyboard = function(evt) {
 StageBase.prototype.ondestroy = function() {
 	Keyboard.removeEventListener("keydown", this._handle_key_context);
 	Keyboard.removeEventListener("keyup", this._handle_key_context);
+	
+	Howler.clearGroupHowls("sound");
+	Howler.clearGroupHowls("music");
 }
