@@ -17,4 +17,15 @@ body {
 
 .jumbotron {
 	min-height:100%;
+	background-image:url(../img/clouds.jpg);
+	background-size: cover;
+	background-attachment: fixed;
+}
+
+.window {
+	background-image:url(../img/clouds.jpg);
+	background-size: cover;
+	background-attachment: fixed;
+	height:200px;
+	width:100%;
 }
