@@ -1,0 +1,41 @@
+.work {
+	background-color:rgb(144, 237, 144);
+	height:200px;
+	box-sizing:border-box;
+	padding:10px;
+	position:relative;
+	background-size:cover;
+	background-position:50%;
+}
+
+.work h2 {
+	font-family:monospace;
+	margin:0;
+	background-color:rgba(255,255,255,0.95);
+	padding:10px;
+	display:inline-block;
+	color:black;
+}
+
+.work .main-tag {
+	position:absolute;
+	bottom:10px;
+	right:10px;
+	padding:5px;
+	background-color:black;
+	color:white;
+	font-family:monospace;
+	font-size:22px;
+}
+
+.work:hover {
+	font-size:120%;
+}
+
+.work.einsteinmaps {
+	background-image:url(../images/works/einsteinmaps/1.jpeg);
+}
+
+.work.toquedochef {
+	background-image:url(../images/works/toquedochef/1.png);
+}

@@ -5,7 +5,6 @@ body, html {
 .content {
 	min-height:100%;
 	position:relative;
-	padding-bottom:220px;
 }
 
 .centralizer {
@@ -48,53 +47,37 @@ header h1  {
 	margin:0;
 }
 
-@media only screen and (max-width: 480px) {
-	header h1 {
-		padding-top:10px;
-		font-size:28px;
-	}
-	header nav {
-		clear:both;
-		text-align:center;
-		padding-top:10px;
-		font-size:16px;
-	}
-}
-
-.work {
-	background-color:rgb(144, 237, 144);
-	height:200px;
-	box-sizing:border-box;
-	padding:10px;
-	position:relative;
-}
-
-.work h2 {
-	font-family:monospace;
-	margin:0;
-}
-
-.work .main-tag {
-	position:absolute;
-	bottom:10px;
-	right:10px;
-	padding:5px;
-	background-color:black;
-	color:white;
-	font-family:monospace;
-	font-size:22px;
-}
-
 footer {
 	box-sizing:border-box;
 	width:100%;
-	height:200px;
+	height:100%;
 	margin-top:20px;
 	padding:20px;
 	background-color:black;
 	color:white;
-	position: absolute;
+	
 	bottom: 0;
+	font-family: monospace;
+	font-size:16px;
+	text-align:center;
+}
+
+footer .spacer {
+	width:40px;
+	display:inline-block;
+}
+
+footer a {
+	text-decoration:inherit;
+	color:inherit;
+}
+
+footer .copyright {
+	display:none;
+	font-size:12px;
+	padding-top:20px;
+	color:#777;
+
 }
 
 #about {
@@ -118,8 +101,35 @@ footer {
 	border: 10px solid rgb(144, 237, 144);
 } 
 
+#contact a {
+	text-decoration: inherit;
+	color:inherit;
+	font-weight:bold;
+}
 
+@media only screen and (max-width: 900px) {
+	footer .spacer {
+		display:block;
+		height:20px;
+	}
+}
 
+@media only screen and (max-width: 480px) {
+	header h1 {
+		padding-top:10px;
+		font-size:28px;
+	}
+	header nav {
+		clear:both;
+		text-align:center;
+		padding-top:10px;
+		font-size:16px;
+	}
+	#profile-pic img {
+		width:240px;
+	}
+	
+}
 
 
 
