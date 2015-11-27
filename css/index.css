@@ -1,5 +1,39 @@
 body, html {
 	height:100%;
+	font-family: "Roboto";
+}
+
+object {
+	display: none;
+}
+
+/*html *[lang] {
+	display: none;
+}*/
+
+html[lang="pt"] *[lang="en"] {
+	display: none;
+}
+
+html[lang="en"] *[lang="pt"] {
+	display: none;
+}
+
+#language-pick {
+	float:right;
+}
+
+#language-pick a {
+	text-decoration: none;
+	color:black;
+}
+
+html[lang="pt"] #language-pick #lang-pt {
+	font-weight: bold;
+}
+
+html[lang="en"] #language-pick #lang-en {
+	font-weight: bold;
 }
 
 .content {
@@ -55,7 +89,7 @@ footer {
 	padding:20px;
 	background-color:black;
 	color:white;
-	
+
 	bottom: 0;
 	font-family: monospace;
 	font-size:16px;
@@ -99,7 +133,7 @@ footer .copyright {
 	border-radius:50%;
 	box-sizing:border-box;
 	border: 10px solid rgb(144, 237, 144);
-} 
+}
 
 #contact a {
 	text-decoration: inherit;
@@ -128,19 +162,13 @@ footer .copyright {
 	#profile-pic img {
 		width:240px;
 	}
-	
+	#language-pick {
+		padding-top:20px;
+	}
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+@media only screen and (min-width: 410px) and (max-width: 480px) {
+	header h1 {
+		padding-top:25px;
+	}
+}

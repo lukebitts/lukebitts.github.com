@@ -1,6 +1,6 @@
 .work {
 	background-color:rgb(144, 237, 144);
-	height:200px;
+	height:350px;
 	box-sizing:border-box;
 	padding:10px;
 	position:relative;
@@ -32,10 +32,35 @@
 	font-size:120%;
 }
 
+.work.virtualworld {
+	background-image:url(../images/works/mundovirtual/1.png);
+	background-position: 50% 25%;
+}
+
 .work.einsteinmaps {
-	background-image:url(../images/works/einsteinmaps/1.jpeg);
+	background-image:url(../images/works/einsteinmaps/1.png);
+	background-position: 50% 45%;
 }
 
 .work.toquedochef {
 	background-image:url(../images/works/toquedochef/1.png);
+	background-position: 50% 0;
+}
+
+.work.gatopolis {
+	background-image:url(../images/works/gatopolis/1.png);
+	background-position: 50% 0;
+}
+
+/*einstein page*/
+.col.image-holder, .col.image-holder2 {
+	text-align: center;
+}
+
+.col img {
+	max-width: 200px;
+}
+
+.col.image-holder2 img {
+	max-width: 400px;
 }
