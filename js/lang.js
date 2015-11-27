@@ -1,5 +1,5 @@
 
-(function(){
+var DomLoaded = (function(){
     function setHtmlLang(lang) {
         if(lang.toLowerCase().indexOf("pt") !== -1) lang = "pt";
         if(["en","pt"].indexOf(lang) === -1) lang = "en";
@@ -21,7 +21,7 @@
 
     setHtmlLang(getUserLang());
 
-    window.onload = function() {
+    return function(){
         document.getElementById("lang-pt").onclick = function(){
             setHtmlLang("pt");
         }
@@ -29,6 +29,6 @@
         document.getElementById("lang-en").onclick = function(){
             setHtmlLang("en");
         }
-    }
+    };
 
 })();
