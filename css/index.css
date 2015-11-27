@@ -165,6 +165,10 @@ footer .copyright {
 	#language-pick {
 		padding-top:20px;
 	}
+
+	.col.image-holder2 img {
+		max-width: 100% !important;
+	}
 }
 
 @media only screen and (min-width: 410px) and (max-width: 480px) {
