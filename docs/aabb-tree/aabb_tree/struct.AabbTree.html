@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `AabbTree` struct in crate `aabb_tree`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, AabbTree">
+
+    <title>aabb_tree::AabbTree - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='index.html'>aabb_tree</a></p><script>window.sidebarCurrent = {name: 'AabbTree', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content struct">
+<h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>aabb_tree</a>::<wbr><a class='struct' href=''>AabbTree</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../src/aabb_tree/lib.rs.html#146-150' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct AabbTree&lt;T&gt; { /* fields omitted */ }</pre><div class='docblock'><p>A dynamic spatial tree. Data is arranged in a binary tree and allows AABB,
+frustum and raycast queries. The proxies returned from the various methods
+are leaves in the tree.</p>
+
+<h1 id='panics' class='section-header'><a href='#panics'>Panics</a></h1>
+<p>AABB operations are checked for validity and will panic if <code>aabb.is_valid()</code>
+returns false.</p>
+</div><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl&lt;T&gt; <a class='struct' href='../aabb_tree/struct.AabbTree.html' title='aabb_tree::AabbTree'>AabbTree</a>&lt;T&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/aabb_tree/lib.rs.html#173-641' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.new' class='method'><span id='new.v' class='invisible'><code>fn <a href='#method.new' class='fnname'>new</a>() -&gt; Self</code></span></h4>
+<div class='docblock'><p>Returns a new AABB</p>
+</div><h4 id='method.create_proxy' class='method'><span id='create_proxy.v' class='invisible'><code>fn <a href='#method.create_proxy' class='fnname'>create_proxy</a>(&amp;mut self,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; aabb: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>)</a>, <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>)</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>)</a>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; user_data: T)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&gt; <a class='struct' href='../aabb_tree/struct.Proxy.html' title='aabb_tree::Proxy'>Proxy</a></code></span></h4>
+<div class='docblock'><p>Creates a new node in the tree.</p>
+</div><h4 id='method.destroy_proxy' class='method'><span id='destroy_proxy.v' class='invisible'><code>fn <a href='#method.destroy_proxy' class='fnname'>destroy_proxy</a>(&amp;mut self, proxy: <a class='struct' href='../aabb_tree/struct.Proxy.html' title='aabb_tree::Proxy'>Proxy</a>)</code></span></h4>
+<div class='docblock'><p>Destroy a node in the tree. Does not deallocate memory, nodes can be reutilized
+on later <code>create_proxy</code> calls.</p>
+
+<h1 id='panics-1' class='section-header'><a href='#panics-1'>Panics</a></h1>
+<p>Panics if the proxy_id is not valid (either was destroyed already or is not a leaf).
+Use proxies returned by <code>create_proxy</code> to avoid problems.</p>
+</div><h4 id='method.set_aabb' class='method'><span id='set_aabb.v' class='invisible'><code>fn <a href='#method.set_aabb' class='fnname'>set_aabb</a>(&amp;mut self,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; proxy: <a class='struct' href='../aabb_tree/struct.Proxy.html' title='aabb_tree::Proxy'>Proxy</a>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; new_aabb: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>)</a>, <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>)</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>)</a>)</code></span></h4>
+<div class='docblock'><p>Changes the AABB of a node, might trigger a tree rebalance if the new AABB
+doesn&#39;t fit within the node&#39;s parent AABB.</p>
+
+<h1 id='panics-2' class='section-header'><a href='#panics-2'>Panics</a></h1>
+<p>Panics if the proxy_id is not valid (either was destroyed already or is not a leaf).
+Use proxies returned by <code>create_proxy</code> to avoid problems.</p>
+</div><h4 id='method.user_data' class='method'><span id='user_data.v' class='invisible'><code>fn <a href='#method.user_data' class='fnname'>user_data</a>(&amp;self, proxy: <a class='struct' href='../aabb_tree/struct.Proxy.html' title='aabb_tree::Proxy'>Proxy</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;&amp;T&gt;</code></span></h4>
+<div class='docblock'><p>Returns a reference to the user data associated with the <code>proxy_id</code>. Returns
+<code>None</code> if the <code>proxy_id</code> is invalid.</p>
+</div><h4 id='method.user_data_mut' class='method'><span id='user_data_mut.v' class='invisible'><code>fn <a href='#method.user_data_mut' class='fnname'>user_data_mut</a>(&amp;mut self, proxy: <a class='struct' href='../aabb_tree/struct.Proxy.html' title='aabb_tree::Proxy'>Proxy</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;&amp;mut T&gt;</code></span></h4>
+<div class='docblock'><p>Returns a mutable reference to the user data associated with the <code>proxy_id</code>. Returns
+<code>None</code> if the <code>proxy_id</code> is invalid.</p>
+</div><h4 id='method.query_aabb' class='method'><span id='query_aabb.v' class='invisible'><code>fn <a href='#method.query_aabb' class='fnname'>query_aabb</a>&lt;F:&nbsp;<a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Fn.html' title='core::ops::Fn'>Fn</a>(<a class='struct' href='../aabb_tree/struct.Proxy.html' title='aabb_tree::Proxy'>Proxy</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>&gt;(&amp;self,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; aabb: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>)</a>, <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>)</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>)</a>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; callback: F)</code></span></h4>
+<div class='docblock'><p>Searchs the AABB for every node that overlaps with <code>aabb</code> and calls the <code>callback</code>
+with the node&#39;s proxy id as a parameter. The callback returns a boolean value
+indicating wether the query should continue or not. The method is a specialized version
+of <code>AabbTree::query</code>, where <code>search</code> is defined as <code>|other_aabb| other_aabb.overlaps(aabb)</code></p>
+</div><h4 id='method.query' class='method'><span id='query.v' class='invisible'><code>fn <a href='#method.query' class='fnname'>query</a>&lt;F, S&gt;(&amp;self, search: S, callback: F) <span class='where'>where F: <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Fn.html' title='core::ops::Fn'>Fn</a>(<a class='struct' href='../aabb_tree/struct.Proxy.html' title='aabb_tree::Proxy'>Proxy</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;S: <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Fn.html' title='core::ops::Fn'>Fn</a>(&amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>)</a>, <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>)</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>)</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></span></code></span></h4>
+<div class='docblock'><p>Searchs the AABB using a generic <code>search</code> function. <code>search</code> receives the current
+AABB being analyzed and should return true if that AABB is within your search
+constraints. Once a leaf node is found and <code>search</code> returns true for that node,
+<code>callback</code> will be called with the node&#39;s proxy id as a parameter. The callback
+returns a boolean value indicating wether the query should continue or not.</p>
+</div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><span class='in-band'><code>impl&lt;T:&nbsp;<a class='trait' href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a>&gt; <a class='trait' href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a> for <a class='struct' href='../aabb_tree/struct.AabbTree.html' title='aabb_tree::AabbTree'>AabbTree</a>&lt;T&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/aabb_tree/lib.rs.html#145' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.clone' class='method'><span id='clone.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class='struct' href='../aabb_tree/struct.AabbTree.html' title='aabb_tree::AabbTree'>AabbTree</a>&lt;T&gt;</code></span></h4>
+<div class='docblock'><p>Returns a copy of the value. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">Read more</a></p>
+</div><h4 id='method.clone_from' class='method'><span id='clone_from.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from' class='fnname'>clone_from</a>(&amp;mut self, source: &amp;Self)</code><div class='since' title='Stable since Rust version 1.0.0'>1.0.0</div></span></h4>
+<div class='docblock'><p>Performs copy-assignment from <code>source</code>. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from">Read more</a></p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl&lt;T&gt; <a class='trait' href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html' title='core::fmt::Debug'>Debug</a> for <a class='struct' href='../aabb_tree/struct.AabbTree.html' title='aabb_tree::AabbTree'>AabbTree</a>&lt;T&gt; <span class='where'>where T: <a class='trait' href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html' title='core::fmt::Debug'>Debug</a></span></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/aabb_tree/lib.rs.html#152-171' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.fmt' class='method'><span id='fmt.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt' class='fnname'>fmt</a>(&amp;self, f: &amp;mut <a class='struct' href='https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html' title='core::fmt::Formatter'>Formatter</a>) -&gt; <a class='type' href='https://doc.rust-lang.org/nightly/core/fmt/type.Result.html' title='core::fmt::Result'>Result</a></code></span></h4>
+<div class='docblock'><p>Formats the value using the given formatter.</p>
+</div></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "aabb_tree";
+    </script>
+    <script src="../jquery.js"></script>
+    <script src="../main.js"></script>
+    <script defer src="../search-index.js"></script>
+</body>
+</html>
