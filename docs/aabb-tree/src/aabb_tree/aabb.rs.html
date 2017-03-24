@@ -396,7 +396,7 @@ fn vec3_num_mul&lt;T: Copy + Mul&lt;Output=T&gt;&gt;(v: (T, T, T), n: T) -&gt; (
 
 <span class='doccomment'>/// A trait that AABB types should implement to be used within the `AabbTree`. Has some</span>
 <span class='doccomment'>/// convenience methods already defined.</span>
-<span class='kw'>pub</span> <span class='kw'>trait</span> <span class='ident'>Aabb</span> : <span class='ident'>Clone</span> {
+<span class='kw'>pub</span> <span class='kw'>trait</span> <span class='ident'>Aabb</span> {
 	<span class='doccomment'>/// Defines the precision of the AABB (and consequently of the `AabbTree`). While</span>
 	<span class='doccomment'>/// any numerical type can be used, the tree might behave weirdly when given non</span>
 	<span class='doccomment'>/// float types.</span>
@@ -492,57 +492,57 @@ fn vec3_num_mul&lt;T: Copy + Mul&lt;Output=T&gt;&gt;(v: (T, T, T), n: T) -&gt; (
 	}
 }
 
-<span class='kw'>impl</span> <span class='ident'>Aabb</span> <span class='kw'>for</span> ((<span class='ident'>f32</span>, <span class='ident'>f32</span>, <span class='ident'>f32</span>), (<span class='ident'>f32</span>, <span class='ident'>f32</span>, <span class='ident'>f32</span>)) {
-	<span class='kw'>type</span> <span class='ident'>Precision</span> <span class='op'>=</span> <span class='ident'>f32</span>;
-	<span class='kw'>fn</span> <span class='ident'>with_params</span>(<span class='ident'>min</span>: (<span class='ident'>f32</span>, <span class='ident'>f32</span>, <span class='ident'>f32</span>), <span class='ident'>max</span>: (<span class='ident'>f32</span>, <span class='ident'>f32</span>, <span class='ident'>f32</span>)) <span class='op'>-&gt;</span> <span class='self'>Self</span> {
-		(<span class='ident'>min</span>, <span class='ident'>max</span>)
+<span class='comment'>/*impl Aabb for ((f32, f32, f32), (f32, f32, f32)) {
+	type Precision = f32;
+	fn with_params(min: (f32, f32, f32), max: (f32, f32, f32)) -&gt; Self {
+		(min, max)
 	}
-	<span class='kw'>fn</span> <span class='ident'>min</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> (<span class='ident'>f32</span>, <span class='ident'>f32</span>, <span class='ident'>f32</span>) {
-		<span class='self'>self</span>.<span class='number'>0</span>
+	fn min(&amp;self) -&gt; (f32, f32, f32) {
+		self.0
 	}
-	<span class='kw'>fn</span> <span class='ident'>max</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> (<span class='ident'>f32</span>, <span class='ident'>f32</span>, <span class='ident'>f32</span>) {
-		<span class='self'>self</span>.<span class='number'>1</span>
-	}
-}
-
-<span class='kw'>impl</span> <span class='ident'>Aabb</span> <span class='kw'>for</span> [[<span class='ident'>f32</span>; <span class='number'>3</span>]; <span class='number'>2</span>] {
-	<span class='kw'>type</span> <span class='ident'>Precision</span> <span class='op'>=</span> <span class='ident'>f32</span>;
-	<span class='kw'>fn</span> <span class='ident'>with_params</span>(<span class='ident'>min</span>: (<span class='ident'>f32</span>, <span class='ident'>f32</span>, <span class='ident'>f32</span>), <span class='ident'>max</span>: (<span class='ident'>f32</span>, <span class='ident'>f32</span>, <span class='ident'>f32</span> )) <span class='op'>-&gt;</span> <span class='self'>Self</span> {
-		[[<span class='ident'>min</span>.<span class='number'>0</span>, <span class='ident'>min</span>.<span class='number'>1</span>, <span class='ident'>min</span>.<span class='number'>2</span>], [<span class='ident'>max</span>.<span class='number'>0</span>, <span class='ident'>max</span>.<span class='number'>1</span>, <span class='ident'>max</span>.<span class='number'>2</span>]]
-	}
-	<span class='kw'>fn</span> <span class='ident'>min</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> (<span class='ident'>f32</span>, <span class='ident'>f32</span>, <span class='ident'>f32</span>) {
-		(<span class='self'>self</span>[<span class='number'>0</span>][<span class='number'>0</span>], <span class='self'>self</span>[<span class='number'>0</span>][<span class='number'>1</span>], <span class='self'>self</span>[<span class='number'>0</span>][<span class='number'>2</span>])
-	}
-	<span class='kw'>fn</span> <span class='ident'>max</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> (<span class='ident'>f32</span>, <span class='ident'>f32</span>, <span class='ident'>f32</span>) {
-		(<span class='self'>self</span>[<span class='number'>1</span>][<span class='number'>0</span>], <span class='self'>self</span>[<span class='number'>1</span>][<span class='number'>1</span>], <span class='self'>self</span>[<span class='number'>1</span>][<span class='number'>2</span>])
+	fn max(&amp;self) -&gt; (f32, f32, f32) {
+		self.1
 	}
 }
 
-<span class='kw'>impl</span> <span class='ident'>Aabb</span> <span class='kw'>for</span> ((<span class='ident'>f64</span>, <span class='ident'>f64</span>, <span class='ident'>f64</span>), (<span class='ident'>f64</span>, <span class='ident'>f64</span>, <span class='ident'>f64</span>)) {
-	<span class='kw'>type</span> <span class='ident'>Precision</span> <span class='op'>=</span> <span class='ident'>f64</span>;
-	<span class='kw'>fn</span> <span class='ident'>with_params</span>(<span class='ident'>min</span>: (<span class='ident'>f64</span>, <span class='ident'>f64</span>, <span class='ident'>f64</span>), <span class='ident'>max</span>: (<span class='ident'>f64</span>, <span class='ident'>f64</span>, <span class='ident'>f64</span>)) <span class='op'>-&gt;</span> <span class='self'>Self</span> {
-		(<span class='ident'>min</span>, <span class='ident'>max</span>)
+impl Aabb for [[f32; 3]; 2] {
+	type Precision = f32;
+	fn with_params(min: (f32, f32, f32), max: (f32, f32, f32 )) -&gt; Self {
+		[[min.0, min.1, min.2], [max.0, max.1, max.2]]
 	}
-	<span class='kw'>fn</span> <span class='ident'>min</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> (<span class='ident'>f64</span>, <span class='ident'>f64</span>, <span class='ident'>f64</span>) {
-		<span class='self'>self</span>.<span class='number'>0</span>
+	fn min(&amp;self) -&gt; (f32, f32, f32) {
+		(self[0][0], self[0][1], self[0][2])
 	}
-	<span class='kw'>fn</span> <span class='ident'>max</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> (<span class='ident'>f64</span>, <span class='ident'>f64</span>, <span class='ident'>f64</span>) {
-		<span class='self'>self</span>.<span class='number'>1</span>
+	fn max(&amp;self) -&gt; (f32, f32, f32) {
+		(self[1][0], self[1][1], self[1][2])
 	}
 }
 
-<span class='kw'>impl</span> <span class='ident'>Aabb</span> <span class='kw'>for</span> [[<span class='ident'>f64</span>; <span class='number'>3</span>]; <span class='number'>2</span>] {
-	<span class='kw'>type</span> <span class='ident'>Precision</span> <span class='op'>=</span> <span class='ident'>f64</span>;
-	<span class='kw'>fn</span> <span class='ident'>with_params</span>(<span class='ident'>min</span>: (<span class='ident'>f64</span>, <span class='ident'>f64</span>, <span class='ident'>f64</span>), <span class='ident'>max</span>: (<span class='ident'>f64</span>, <span class='ident'>f64</span>, <span class='ident'>f64</span>)) <span class='op'>-&gt;</span> <span class='self'>Self</span> {
-		[[<span class='ident'>min</span>.<span class='number'>0</span>, <span class='ident'>min</span>.<span class='number'>1</span>, <span class='ident'>min</span>.<span class='number'>2</span>], [<span class='ident'>max</span>.<span class='number'>0</span>, <span class='ident'>max</span>.<span class='number'>1</span>, <span class='ident'>max</span>.<span class='number'>2</span>]]
+impl Aabb for ((f64, f64, f64), (f64, f64, f64)) {
+	type Precision = f64;
+	fn with_params(min: (f64, f64, f64), max: (f64, f64, f64)) -&gt; Self {
+		(min, max)
 	}
-	<span class='kw'>fn</span> <span class='ident'>min</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> (<span class='ident'>f64</span>, <span class='ident'>f64</span>, <span class='ident'>f64</span>) {
-		(<span class='self'>self</span>[<span class='number'>0</span>][<span class='number'>0</span>], <span class='self'>self</span>[<span class='number'>0</span>][<span class='number'>1</span>], <span class='self'>self</span>[<span class='number'>0</span>][<span class='number'>2</span>])
+	fn min(&amp;self) -&gt; (f64, f64, f64) {
+		self.0
 	}
-	<span class='kw'>fn</span> <span class='ident'>max</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> (<span class='ident'>f64</span>, <span class='ident'>f64</span>, <span class='ident'>f64</span>) {
-		(<span class='self'>self</span>[<span class='number'>1</span>][<span class='number'>0</span>], <span class='self'>self</span>[<span class='number'>1</span>][<span class='number'>1</span>], <span class='self'>self</span>[<span class='number'>1</span>][<span class='number'>2</span>])
+	fn max(&amp;self) -&gt; (f64, f64, f64) {
+		self.1
 	}
 }
+
+impl Aabb for [[f64; 3]; 2] {
+	type Precision = f64;
+	fn with_params(min: (f64, f64, f64), max: (f64, f64, f64)) -&gt; Self {
+		[[min.0, min.1, min.2], [max.0, max.1, max.2]]
+	}
+	fn min(&amp;self) -&gt; (f64, f64, f64) {
+		(self[0][0], self[0][1], self[0][2])
+	}
+	fn max(&amp;self) -&gt; (f64, f64, f64) {
+		(self[1][0], self[1][1], self[1][2])
+	}
+}*/</span>
 
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>test</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>tests</span> {

@@ -48,30 +48,37 @@
                    <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                        [<span class='inner'>&#x2212;</span>]
                    </a>
-               </span><a class='srclink' href='../src/aabb_tree/lib.rs.html#1-815' title='goto source code'>[src]</a></span></h1>
+               </span><a class='srclink' href='../src/aabb_tree/lib.rs.html#1-832' title='goto source code'>[src]</a></span></h1>
 <div class='docblock'>
 <h1 id='aabb-tree' class='section-header'><a href='#aabb-tree'>AABB tree</a></h1>
 <p>This crate is the implementation of a dynamic bounding volume tree based on
 axis aligned bounding boxes. It is a spatial structure with support for
 querying objects based on their position and size inside the tree.
-This work is based on Presson&#39;s btDbvt written for Bullet Physics and
+This work is based on Presson&#39;s <code>btDbvt</code> written for Bullet Physics and
 Catto&#39;s <code>b2DynamicTree</code> written for Box2D.</p>
 </div><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
 <table>
                        <tr class=' module-item'>
                            <td><a class='struct' href='struct.AabbTree.html'
-                                  title='aabb_tree::AabbTree'>AabbTree</a></td>
+                                  title='struct aabb_tree::AabbTree'>AabbTree</a></td>
                            <td class='docblock-short'>
-                                <p>A dynamic spatial tree. Data is arranged in a binary tree and allows AABB,
-frustum and raycast queries. The proxies returned from the various methods
-are leaves in the tree.</p>
+                                <p>A dynamic spatial tree. Data is arranged in a binary tree which allows fast positional queries.
+The proxies returned from the various methods are leaves in the tree.</p>
                            </td>
                        </tr>
                        <tr class=' module-item'>
                            <td><a class='struct' href='struct.Proxy.html'
-                                  title='aabb_tree::Proxy'>Proxy</a></td>
+                                  title='struct aabb_tree::Proxy'>Proxy</a></td>
                            <td class='docblock-short'>
                                 <p>An easily copyable type that represents a value inside the tree</p>
+                           </td>
+                       </tr></table><h2 id='types' class='section-header'><a href="#types">Type Definitions</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='type' href='type.MinMaxTuple.html'
+                                  title='type aabb_tree::MinMaxTuple'>MinMaxTuple</a></td>
+                           <td class='docblock-short'>
+                                <p>How the tree represents AABBs internally</p>
                            </td>
                        </tr></table></section>
     <section id='search' class="content hidden"></section>
