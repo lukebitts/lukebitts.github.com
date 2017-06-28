@@ -148,7 +148,6 @@
 <span id="103">103</span>
 <span id="104">104</span>
 <span id="105">105</span>
-<span id="106">106</span>
 </pre><pre class="rust ">
 <span class="attribute">#<span class="op">!</span>[<span class="ident">deny</span>(<span class="ident">warnings</span>)]</span>
 <span class="attribute">#<span class="op">!</span>[<span class="ident">deny</span>(<span class="ident">missing_docs</span>)]</span>
@@ -174,9 +173,8 @@
         <span class="kw">return</span> <span class="bool-val">false</span>;
     }
 
-    <span class="ident">validate_first_digit</span>(<span class="kw-2">&amp;</span><span class="ident">cpf_as_numbers</span>);
-    <span class="ident">validate_second_digit</span>(<span class="kw-2">&amp;</span><span class="ident">cpf_as_numbers</span>);
-
+    <span class="ident">validate_first_digit</span>(<span class="kw-2">&amp;</span><span class="ident">cpf_as_numbers</span>) <span class="op">&amp;&amp;</span>
+    <span class="ident">validate_second_digit</span>(<span class="kw-2">&amp;</span><span class="ident">cpf_as_numbers</span>) <span class="op">&amp;&amp;</span>
     <span class="bool-val">true</span>
 }
 
@@ -201,7 +199,7 @@
 
     <span class="kw">match</span> (<span class="ident">result</span>, <span class="ident">numbers</span>[<span class="ident">validator_index</span>]) {
         (<span class="number">11</span>...<span class="ident">std</span>::<span class="ident">u32</span>::<span class="ident">MAX</span>, <span class="number">10</span>...<span class="ident">std</span>::<span class="ident">u32</span>::<span class="ident">MAX</span>) <span class="op">=&gt;</span> {
-            <span class="macro">unreachable</span><span class="macro">!</span>(<span class="string">&quot;Result greater than 10 or element in numbers greater 9&quot;</span>)
+            <span class="macro">unreachable</span><span class="macro">!</span>(<span class="string">&quot;Result greater than 10 or element in numbers greater than 9&quot;</span>)
         }
         (<span class="number">10</span>, <span class="number">0</span>) <span class="op">=&gt;</span> (),
         (<span class="ident">x</span>, <span class="ident">y</span>) <span class="kw">if</span> <span class="ident">x</span> <span class="op">==</span> <span class="ident">y</span> <span class="op">=&gt;</span> (),
@@ -218,7 +216,7 @@
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">incorrect_input</span>() {
         <span class="kw">let</span> <span class="ident">input</span> <span class="op">=</span> [
-            <span class="string">&quot;00000000000&quot;</span>,
+            <span class="string">&quot;00000000000&quot;</span>, <span class="comment">//Repeated digits</span>
             <span class="string">&quot;11111111111&quot;</span>,
             <span class="string">&quot;22222222222&quot;</span>,
             <span class="string">&quot;33333333333&quot;</span>,
@@ -228,12 +226,12 @@
             <span class="string">&quot;77777777777&quot;</span>,
             <span class="string">&quot;88888888888&quot;</span>,
             <span class="string">&quot;99999999999&quot;</span>,
-
-            <span class="string">&quot;3756848086&quot;</span>,
-            <span class="string">&quot;375684808601&quot;</span>,
-            <span class="string">&quot;&quot;</span>,
-            <span class="string">&quot;abcdefghijk&quot;</span>,
-            <span class="string">&quot;abcdefghij&quot;</span>,
+            <span class="string">&quot;37568480861&quot;</span>, <span class="comment">//Wrong last 2 numbers</span>
+            <span class="string">&quot;3756848086&quot;</span>,  <span class="comment">//Incorrect length</span>
+            <span class="string">&quot;375684808601&quot;</span>,<span class="comment">//Incorrect length</span>
+            <span class="string">&quot;&quot;</span>,            <span class="comment">//Empty</span>
+            <span class="string">&quot;abcdefghijk&quot;</span>, <span class="comment">//Non digits</span>
+            <span class="string">&quot;ábcdefghij&quot;</span>,
             <span class="string">&quot;abcdefghijkl&quot;</span>,
         ];
 
