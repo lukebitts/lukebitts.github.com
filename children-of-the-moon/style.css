@@ -223,15 +223,15 @@ body.dark {
 }
 
 body.rolling {
-    background: white;
+    background: gray;
 }
 
 body.success {
-    background: rgb(0,233,90);
+    background: darkgreen;
 }
 
 body.failure {
-    background: red;
+    background: darkred;
 }
 
 .dark h2 {
